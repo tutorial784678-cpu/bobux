@@ -1,846 +1,1100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roblox: Steal an Egg (Bobux Edition)</title>
+<title>Bobux - Official Roblox Platform & Steel an Egg</title>
 <style>
+  :root {
+    --rbx-bg: #191b1d;
+    --rbx-nav: #111214;
+    --rbx-card: #232527;
+    --rbx-card-hover: #32353b;
+    --rbx-green: #00b06f;
+    --rbx-green-hover: #00c87f;
+    --rbx-blue: #00a2ff;
+    --rbx-border: #2b2d31;
+    --rbx-text-sub: #999ea5;
+    --rbx-gold: #f5b800;
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     user-select: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   }
 
-  body, html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
+  body {
+    background: var(--rbx-bg);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
-  #webgl-container {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  /* CLASSIC ROBLOX TOP BAR */
-  .rbx-topbar {
+  /* ================= TOP NAVIGATION BAR ================= */
+  .navbar {
+    height: 52px;
+    background: var(--rbx-nav);
+    border-bottom: 1px solid var(--rbx-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    z-index: 1000;
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    letter-spacing: -0.5px;
+  }
+
+  .bobux-badge {
+    width: 22px;
+    height: 22px;
+    background: var(--rbx-gold);
+    border-radius: 4px;
+    transform: rotate(15deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: #000;
+    font-size: 13px;
+  }
+
+  .nav-tabs button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .nav-tabs button:hover, .nav-tabs button.active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .search-input {
+    background: #232527;
+    border: 1px solid var(--rbx-border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    color: #fff;
+    width: 220px;
+    outline: none;
+    font-size: 13px;
+  }
+
+  .currency-pill {
+    background: #232527;
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--rbx-border);
+  }
+
+  .admin-abuse-btn {
+    background: linear-gradient(135deg, #7a1cd8, #ff0080);
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  /* ================= LAYOUT & SIDEBAR ================= */
+  .app-layout {
+    display: flex;
+    margin-top: 52px;
+  }
+
+  .sidebar {
+    width: 200px;
+    background: #18191c;
+    height: calc(100vh - 52px);
+    position: fixed;
+    border-right: 1px solid var(--rbx-border);
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: var(--rbx-text-sub);
+    background: none;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.15s;
+  }
+
+  .sidebar button:hover, .sidebar button.active {
+    background: var(--rbx-card);
+    color: #fff;
+  }
+
+  .main-viewport {
+    margin-left: 200px;
+    padding: 24px 36px;
+    width: calc(100% - 200px);
+    min-height: calc(100vh - 52px);
+  }
+
+  /* ================= PAGES: GAMES HUB ================= */
+  .page-view {
+    display: none;
+  }
+  .page-view.active {
+    display: block;
+  }
+
+  /* FEATURED TOP GAME */
+  .featured-banner {
+    background: linear-gradient(135deg, #1f2b38 0%, #15102a 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid #3b3f49;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin-bottom: 32px;
+  }
+
+  .featured-poster {
+    width: 55%;
+    min-height: 280px;
+    background: url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?auto=format&fit=crop&w=1200&q=80') center/cover;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .egg-float {
+    font-size: 80px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+    animation: eggBob 2s ease-in-out infinite;
+  }
+  @keyframes eggBob {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+  }
+
+  .featured-info {
+    padding: 30px;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .play-green-btn {
+    background: var(--rbx-green);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    box-shadow: 0 4px 15px rgba(0, 176, 111, 0.4);
+    transition: 0.2s;
+  }
+  .play-green-btn:hover {
+    background: var(--rbx-green-hover);
+    transform: translateY(-2px);
+  }
+
+  /* GRID CARDS FOR 4 MORE GAMES */
+  .section-heading {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .game-card {
+    background: var(--rbx-card);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid var(--rbx-border);
+  }
+
+  .game-card:hover {
+    background: var(--rbx-card-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  .card-thumbnail {
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+  }
+
+  .card-body {
+    padding: 10px 12px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-stats {
+    font-size: 11px;
+    color: var(--rbx-text-sub);
+  }
+
+  /* ================= AVATAR CUSTOMIZER PAGE ================= */
+  .avatar-shop-container {
+    display: flex;
+    gap: 24px;
+  }
+
+  .avatar-preview-box {
+    width: 320px;
+    height: 420px;
+    background: #151619;
+    border-radius: 12px;
+    border: 2px solid var(--rbx-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+  }
+
+  .avatar-model-preview {
+    font-size: 100px;
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8));
+    margin-bottom: 20px;
+  }
+
+  .skins-selector-box {
+    flex: 1;
+    background: var(--rbx-card);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--rbx-border);
+  }
+
+  .skins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .skin-item {
+    background: #191b1d;
+    border: 2px solid var(--rbx-border);
+    border-radius: 8px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+
+  .skin-item:hover, .skin-item.selected {
+    border-color: var(--rbx-green);
+    background: #25282c;
+  }
+
+  .skin-item .skin-icon {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+
+  .skin-item .skin-name {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* ================= 3D GAME RUNNER MODAL ================= */
+  .game-3d-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 2000;
+    display: none;
+  }
+
+  #webgl-canvas-box {
+    width: 100%;
+    height: 100%;
+  }
+
+  .game-overlay-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 46px;
-    background: rgba(25, 27, 29, 0.85);
+    background: rgba(18, 19, 21, 0.85);
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
     z-index: 100;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
 
-  .rbx-left, .rbx-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .rbx-logo-btn {
-    width: 32px;
-    height: 32px;
+  .exit-game-btn {
     background: #e91e63;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 900;
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(233, 30, 99, 0.5);
-  }
-
-  .health-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,0,0,0.5);
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .health-bar-bg {
-    width: 130px;
-    height: 10px;
-    background: #333;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  .health-bar-fill {
-    width: 100%;
-    height: 100%;
-    background: #00b06f;
-    transition: width 0.2s;
-  }
-
-  .bobux-pill {
-    background: rgba(0,0,0,0.6);
-    border: 1px solid #ffd700;
-    color: #ffd700;
-    font-weight: 800;
-    font-size: 13px;
-    padding: 5px 12px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .admin-btn {
-    background: linear-gradient(135deg, #7928ca, #ff0080);
-    color: #fff;
+    color: white;
     border: none;
-    font-size: 12px;
-    font-weight: 800;
     padding: 6px 14px;
     border-radius: 6px;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-
-  /* LEADERBOARD (TOP RIGHT) */
-  .rbx-leaderboard {
-    position: fixed;
-    top: 56px;
-    right: 14px;
-    width: 220px;
-    background: rgba(25, 27, 29, 0.85);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 12px;
-    padding: 10px;
-    z-index: 90;
-  }
-
-  .lb-header {
     font-weight: 800;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    padding-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-    color: #aaa;
+    cursor: pointer;
   }
 
-  .lb-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    font-weight: 600;
-  }
-
-  /* ACTION PROMPT (PRESS E TO STEAL) */
-  .action-prompt {
-    position: fixed;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #00e5ff;
-    padding: 10px 24px;
-    border-radius: 30px;
-    font-weight: 900;
-    font-size: 16px;
-    color: #fff;
-    pointer-events: none;
-    display: none;
-    z-index: 100;
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
-  }
-
-  /* BOTTOM NOTIFICATIONS & CONTROLS INFO */
-  .controls-hud {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-    background: rgba(0,0,0,0.65);
-    color: #ccc;
-    font-size: 12px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    z-index: 90;
-    line-height: 1.6;
-  }
-
-  .alert-banner {
-    position: fixed;
-    top: 60px;
+  .night-alert-banner {
+    position: absolute;
+    top: 56px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(220, 20, 60, 0.9);
+    background: linear-gradient(90deg, #b71c1c, #4a148c);
     padding: 8px 24px;
-    color: white;
-    font-weight: 800;
+    color: #fff;
+    font-weight: 900;
     border-radius: 20px;
     font-size: 14px;
     display: none;
     z-index: 100;
+    border: 2px solid #ffd700;
   }
 
-  /* ADMIN PANEL MODAL */
-  .admin-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 360px;
-    background: #18191c;
-    border: 2px solid #ff0080;
-    border-radius: 12px;
-    box-shadow: 0 0 35px rgba(255, 0, 128, 0.4);
-    z-index: 1000;
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .admin-header {
-    background: linear-gradient(90deg, #7928ca, #ff0080);
-    padding: 10px 16px;
-    color: #fff;
-    font-weight: 900;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .admin-body {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .admin-body button {
-    background: #2b2d31;
-    border: 1px solid #444;
-    color: white;
-    font-weight: bold;
-    padding: 9px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.15s;
-    font-size: 13px;
-  }
-
-  .admin-body button:hover {
-    background: #ff0080;
-    border-color: #ff0080;
-  }
-
-  /* JUMP BUTTON / STATUS */
-  .speed-indicator {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    background: rgba(0,0,0,0.65);
-    border: 1px solid rgba(255,255,255,0.2);
+  .action-hud {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.8);
+    border: 2px solid #00e5ff;
     padding: 10px 18px;
-    border-radius: 8px;
+    border-radius: 10px;
     color: #00e5ff;
     font-weight: 800;
-    font-size: 14px;
-    z-index: 90;
+    text-align: right;
+  }
+
+  .controls-hud {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.7);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #ccc;
+    line-height: 1.5;
+  }
+
+  /* ADMIN PANEL */
+  .admin-panel {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 320px;
+    background: #18191c;
+    border: 2px solid #ff0080;
+    border-radius: 10px;
+    z-index: 3000;
+    display: none;
+    flex-direction: column;
+    padding: 14px;
+    gap: 8px;
+  }
+
+  .admin-panel button {
+    background: #23252a;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 8px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .admin-panel button:hover {
+    background: #ff0080;
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-  <!-- ROBLOX TOPBAR -->
-  <div class="rbx-topbar">
-    <div class="rbx-left">
-      <div class="rbx-logo-btn" title="Roblox Menu">🥚</div>
-      <div class="health-container">
-        <span style="font-size:12px;">❤️</span>
-        <div class="health-bar-bg"><div class="health-bar-fill" id="hpFill"></div></div>
+  <!-- ================= TOP ROBLOX NAVBAR ================= -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo" onclick="switchTab('discover')">
+        <div class="bobux-badge">B</div>
+        Bobux
       </div>
+      <nav class="nav-tabs">
+        <button id="tab-discover" class="active" onclick="switchTab('discover')">Discover</button>
+        <button id="tab-avatar" onclick="switchTab('avatar')">Avatar Shop</button>
+        <button onclick="alert('Bobux Studio Editor v2.4 Ready!')">Create</button>
+      </nav>
+      <input type="text" class="search-input" placeholder="Search experiences, eggs, skins...">
     </div>
-    <div class="rbx-right">
-      <div class="bobux-pill">
+
+    <div class="nav-right">
+      <div class="currency-pill">
         <span>⬡</span>
-        <span id="bobuxCount">250</span> Bobux
+        <span id="navBobux">10,500</span> Bobux
       </div>
-      <button class="admin-btn" onclick="toggleAdmin()">⚡ Admin Abuse</button>
+      <button class="admin-abuse-btn" onclick="toggleAdmin()">⚡ Admin Abuse</button>
+      <div id="navAvatarIcon" style="font-size:22px; cursor:pointer;" onclick="switchTab('avatar')">😎</div>
     </div>
+  </header>
+
+  <!-- ================= APP LAYOUT ================= -->
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <button class="active" onclick="switchTab('discover')">🏠 Home</button>
+      <button onclick="switchTab('discover')">🎮 Discover</button>
+      <button onclick="switchTab('avatar')">👕 Avatar (کریکٹر)</button>
+      <button onclick="alert('No new messages!')">💬 Messages</button>
+      <button onclick="alert('Friends: Guest666, MegaNoob99')">👥 Friends</button>
+      <button onclick="alert('Trade Center Active')">🔄 Trade</button>
+    </aside>
+
+    <!-- MAIN VIEWPORT -->
+    <main class="main-viewport">
+
+      <!-- ================= PAGE 1: GAMES DISCOVERY ================= -->
+      <div id="page-discover" class="page-view active">
+        
+        <!-- TOP FEATURED: STEEL AN EGG -->
+        <div class="featured-banner">
+          <div class="featured-poster">
+            <div class="egg-float">🥚</div>
+          </div>
+          <div class="featured-info">
+            <span style="color:#e91e63; font-weight:800; font-size:12px; letter-spacing:1px; margin-bottom:6px;">🔥 #1 TOP RATED GAME</span>
+            <h1 style="font-size:32px; font-weight:900; margin-bottom:8px;">Steel an egg</h1>
+            <p style="color:var(--rbx-text-sub); font-size:13px; margin-bottom:18px;">
+              بیس میں ٹریڈمل پر بھاگ کر سپیڈ بڑھائیں، گارڈینز سے بچ کر نایاب Divine اور Secret انڈے چوری کریں، اور رات کے وقت 30X سپیڈ ملٹی پلائر حاصل کریں!
+            </p>
+            <div style="display:flex; gap:16px; margin-bottom:20px; font-size:13px; color:var(--rbx-text-sub);">
+              <span>👍 99% Likes</span>
+              <span>👥 240.5K Playing</span>
+              <span>🌙 30X Night Ready</span>
+            </div>
+            <button class="play-green-btn" onclick="start3DGame()">
+              <span>▶</span> Play "Steel an egg"
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 MORE ROBLOX EXPERIENCES -->
+        <div class="section-heading">
+          <span>Popular Experiences (مزید کھیلیں)</span>
+        </div>
+
+        <div class="games-grid">
+          <!-- Game 1: Tower of Bobux Obby -->
+          <div class="game-card" onclick="launchMiniGame('Tower of Bobux Obby', '🏃', 'پارکور کی رکاوٹیں پار کریں اور ٹاور کے اوپر پہنچیں!')">
+            <div class="card-thumbnail" style="background:#4a148c;">🧗</div>
+            <div class="card-body">
+              <div class="card-title">Tower of Bobux (Mega Obby)</div>
+              <div class="card-stats">👍 96% • 👥 48.2K Playing</div>
+            </div>
+          </div>
+
+          <!-- Game 2: Natural Disaster Survival -->
+          <div class="game-card" onclick="launchMiniGame('Natural Disaster Survival', '🌪️', 'طوفان، زلزلے اور میٹیور شاور سے بچیں!')">
+            <div class="card-thumbnail" style="background:#bf360c;">🌋</div>
+            <div class="card-body">
+              <div class="card-title">Natural Disaster Bobux</div>
+              <div class="card-stats">👍 93% • 👥 89.1K Playing</div>
+            </div>
+          </div>
+
+          <!-- Game 3: Brookhaven RP -->
+          <div class="game-card" onclick="launchMiniGame('Brookhaven Bobux RP', '🚗', 'اپنا گھر خریدیں، لگژری کاریں ڈرائیو کریں اور دوست بنائیں!')">
+            <div class="card-thumbnail" style="background:#004d40;">🏡</div>
+            <div class="card-body">
+              <div class="card-title">Brookhaven Bobux RP</div>
+              <div class="card-stats">👍 91% • 👥 125.4K Playing</div>
+            </div>
+          </div>
+
+          <!-- Game 4: Blox Fruits Sword Arena -->
+          <div class="game-card" onclick="launchMiniGame('Blox Fruits Sword Arena', '⚔️', 'جادوئی تلواریں حاصل کریں اور دیگر پلیئرز سے مقابلہ کریں!')">
+            <div class="card-thumbnail" style="background:#1a237e;">⚔️</div>
+            <div class="card-body">
+              <div class="card-title">Blox Fruits: Sword Arena</div>
+              <div class="card-stats">👍 95% • 👥 110.8K Playing</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= PAGE 2: AVATAR CUSTOMIZER ================= -->
+      <div id="page-avatar" class="page-view">
+        <h2 style="font-size:24px; font-weight:800; margin-bottom:6px;">Avatar Shop (کریکٹر کسٹمائزر)</h2>
+        <p style="color:var(--rbx-text-sub); margin-bottom:20px; font-size:13px;">یہاں سے اپنی پسند کا کریکٹر منتخب کریں، وہی کریکٹر گیم کے اندر ظاہر ہوگا!</p>
+
+        <div class="avatar-shop-container">
+          <!-- Preview Box -->
+          <div class="avatar-preview-box">
+            <div class="avatar-model-preview" id="avatarPreviewIcon">😎</div>
+            <h3 id="currentSkinTitle" style="font-size:18px; font-weight:800;">Classic Noob</h3>
+            <span style="color:#00ff88; font-size:12px; font-weight:bold; margin-top:4px;">✓ EQUIPPED IN 3D WORLD</span>
+          </div>
+
+          <!-- Skin Selection -->
+          <div class="skins-selector-box">
+            <h3 style="font-size:16px; margin-bottom:12px;">مفت کھالیں اور کریکٹرز (Select Character Skin)</h3>
+            
+            <div class="skins-grid">
+              <div class="skin-item selected" onclick="applySkin('noob', '😎', 'Classic Noob', 0xf5cd2f, 0x0d69ac, 0x5a9a32, this)">
+                <div class="skin-icon">😎</div>
+                <div class="skin-name">Classic Noob</div>
+              </div>
+
+              <div class="skin-item" onclick="applySkin('bacon', '🧑‍🦱', 'Bacon Hair', 0xffd1b3, 0xa52a2a, 0x1f2937, this)">
+                <div class="skin-icon">🧑‍🦱</div>
+                <div class="skin-name">Bacon Hair</div>
+              </div>
+
+              <div class="skin-item" onclick="applySkin('guest', '😈', 'Guest 666', 0x222222, 0xd80000, 0x111111, this)">
+                <div class="skin-icon">😈</div>
+                <div class="skin-name">Guest 666</div>
+              </div>
+
+              <div class="skin-item" onclick="applySkin('hacker', '🤖', 'Pro Hacker', 0x00ff00, 0x111111, 0x00ff00, this)">
+                <div class="skin-icon">🤖</div>
+                <div class="skin-name">Pro Hacker</div>
+              </div>
+
+              <div class="skin-item" onclick="applySkin('golden', '👑', 'Golden King', 0xffd700, 0xffbb00, 0xcca000, this)">
+                <div class="skin-icon">👑</div>
+                <div class="skin-name">Golden King</div>
+              </div>
+            </div>
+
+            <div style="margin-top:24px;">
+              <button class="play-green-btn" onclick="start3DGame()">✓ یہ کریکٹر لے کر "Steel an Egg" کھیلیں</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
   </div>
 
-  <!-- LEADERBOARD -->
-  <div class="rbx-leaderboard">
-    <div class="lb-header">
-      <span>Players</span>
-      <span>Eggs / Speed</span>
+  <!-- ================= 3D STEEL AN EGG FULL VIEW ================= -->
+  <div class="game-3d-screen" id="game3dScreen">
+    <div class="game-overlay-topbar">
+      <span style="font-weight:bold; font-size:14px;">🎮 Playing: Steel an Egg (Roblox 3D Engine)</span>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="color:#ffd700; font-weight:800;" id="game3dBobux">⬡ 10,500</span>
+        <button class="admin-abuse-btn" onclick="toggleAdmin()">⚡ Admin</button>
+        <button class="exit-game-btn" onclick="exit3DGame()">✕ Exit Game</button>
+      </div>
     </div>
-    <div class="lb-row">
-      <span style="color:#00e5ff;">👑 You (Noob)</span>
-      <span id="lbStats">0 | 16 spd</span>
+
+    <div class="night-alert-banner" id="gameNightBanner">
+      🌙 رات شروع ہو چکی ہے! 30X SPEED MULTIPLIER ACTIVE! ٹریڈمل پر جائیں!
     </div>
-    <div class="lb-row">
-      <span>🤖 Guest666</span>
-      <span>14 | 28 spd</span>
+
+    <div class="controls-hud">
+      <strong>کنٹرولز:</strong><br>
+      • <b>WASD</b>: چلنا / دوڑنا<br>
+      • <b>SPACE</b>: جمپ (Jump)<br>
+      • <b>Right Mouse Drag</b>: کیمرہ گھمائیں<br>
+      • <b>E</b>: انڈا چوری کریں<br>
+      • <b>ٹریڈمل</b>: بیس کے اندر ٹریڈمل پر جائیں!
     </div>
-    <div class="lb-row">
-      <span>🍗 MegaChicken</span>
-      <span>BOSS</span>
+
+    <div class="action-hud" id="gameActionHud">
+      🏃 سپیڈ: 16<br>
+      <span style="font-size:12px; color:#ffeb3b;" id="gameMultText">⚡ ملٹی پلائر: 1X</span>
     </div>
+
+    <div id="webgl-canvas-box"></div>
   </div>
 
-  <!-- INTERACTION PROMPTS -->
-  <div class="action-prompt" id="actionPrompt">[E] STEAL EGG!</div>
-  <div class="alert-banner" id="alertBanner">⚠️ GUARDIAN IS HUNTING YOU! RUN TO THE BASE!</div>
-
-  <!-- CONTROLS GUIDE -->
-  <div class="controls-hud">
-    <strong>Computer Controls:</strong><br>
-    • <b>W, A, S, D</b>: Walk<br>
-    • <b>SPACE</b>: Jump<br>
-    • <b>Right Mouse Drag</b>: Orbit Camera<br>
-    • <b>E</b>: Steal / Interact<br>
-    • <b>Treadmill</b>: Run on it in your base to upgrade speed!
-  </div>
-
-  <div class="speed-indicator" id="speedDisplay">
-    🏃 Speed: 16 | Level: 1
-  </div>
-
-  <!-- ADMIN ABUSE WINDOW -->
+  <!-- ADMIN PANEL -->
   <div class="admin-panel" id="adminPanel">
-    <div class="admin-header">
-      <span>⚡ BOBUX ADMIN ABUSE v4.0</span>
+    <div style="font-weight:900; color:#ff0080; font-size:13px; display:flex; justify-content:space-between;">
+      <span>⚡ BOBUX ADMIN ABUSE</span>
       <span style="cursor:pointer;" onclick="toggleAdmin()">✕</span>
     </div>
-    <div class="admin-body">
-      <button onclick="adminGiveBobux()">💰 +1,000,000 Free Bobux</button>
-      <button onclick="adminSuperSpeed()">⚡ God Speed (100 WalkSpeed)</button>
-      <button onclick="adminSuperJump()">🚀 High Gravity Jump (JumpPower 50)</button>
-      <button onclick="adminSpawnGoldenEgg()">✨ Spawn Mythic Giant Egg</button>
-      <button onclick="adminFreezeChicken()">❄️ Freeze / Unfreeze Guardians</button>
-      <button onclick="adminRainbowDisco()">🌈 Trigger Disco Baseplate</button>
-    </div>
+    <button onclick="forceNightToggle()">🌙 رات آن/آف کریں (فوری 30X)</button>
+    <button onclick="addBobux(1000000)">💰 +1,000,000 Free Bobux</button>
+    <button onclick="boostSpeed(120)">⚡ Super God Speed (120 spd)</button>
+    <button onclick="spawnDivineCluster()">✨ تمام ڈیوائن اور سیکرٹ ایگز سپون کریں</button>
   </div>
-
-  <!-- 3D VIEWPORT -->
-  <div id="webgl-container"></div>
 
 <script>
   /* =========================================================
-     3D ENGINE SETUP (ROBLOX THEME)
+     SITE TABS & AVATAR STATE
      ========================================================= */
-  const container = document.getElementById('webgl-container');
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x7ec0ee); // Roblox Day Sky Blue
-  scene.fog = new THREE.FogExp2(0x7ec0ee, 0.007);
+  let bobux = 10500;
+  let activeSkin = {
+    id: 'noob',
+    name: 'Classic Noob',
+    icon: '😎',
+    headColor: 0xf5cd2f,
+    torsoColor: 0x0d69ac,
+    legColor: 0x5a9a32
+  };
 
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  container.appendChild(renderer.domElement);
-
-  // Lighting
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
-  scene.add(hemiLight);
-
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  dirLight.position.set(60, 100, 40);
-  dirLight.castShadow = true;
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
-  dirLight.shadow.camera.left = -100;
-  dirLight.shadow.camera.right = 100;
-  dirLight.shadow.camera.top = 100;
-  dirLight.shadow.camera.bottom = -100;
-  scene.add(dirLight);
-
-  /* =========================================================
-     ENVIRONMENT & BASEPLATE
-     ========================================================= */
-  // Classic Gray Studded Baseplate
-  const baseplateGeo = new THREE.PlaneGeometry(300, 300);
-  const baseplateMat = new THREE.MeshStandardMaterial({ 
-    color: 0x5a636a, 
-    roughness: 0.8,
-    metalness: 0.1
-  });
-  const baseplate = new THREE.Mesh(baseplateGeo, baseplateMat);
-  baseplate.rotation.x = -Math.PI / 2;
-  baseplate.receiveShadow = true;
-  scene.add(baseplate);
-
-  // Grid texture helper for "Roblox studs" feeling
-  const gridHelper = new THREE.GridHelper(300, 75, 0x3a4046, 0x454c54);
-  gridHelper.position.y = 0.02;
-  scene.add(gridHelper);
-
-  // PLAYER BASE (SAFE ZONE)
-  const baseGeo = new THREE.BoxGeometry(36, 1, 36);
-  const baseMat = new THREE.MeshStandardMaterial({ color: 0x1f2326 });
-  const playerBase = new THREE.Mesh(baseGeo, baseMat);
-  playerBase.position.set(0, 0.5, 70);
-  playerBase.receiveShadow = true;
-  scene.add(playerBase);
-
-  // Safezone Neon Border
-  const borderGeo = new THREE.BoxGeometry(38, 0.6, 38);
-  const borderMat = new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true });
-  const borderMesh = new THREE.Mesh(borderGeo, borderMat);
-  borderMesh.position.set(0, 0.6, 70);
-  scene.add(borderMesh);
-
-  // Treadmill in Base (Train for Speed)
-  const tmGroup = new THREE.Group();
-  const tmBase = new THREE.Mesh(new THREE.BoxGeometry(6, 0.8, 10), new THREE.MeshStandardMaterial({color: 0x222}));
-  const tmBelt = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.9, 8), new THREE.MeshStandardMaterial({color: 0xff0055}));
-  tmGroup.add(tmBase, tmBelt);
-  tmGroup.position.set(-10, 0.8, 70);
-  scene.add(tmGroup);
-
-  // Base Hatch Nest
-  const nestGeo = new THREE.CylinderGeometry(4, 3, 1.2, 16);
-  const nestMat = new THREE.MeshStandardMaterial({ color: 0xd4a373 });
-  const nestMesh = new THREE.Mesh(nestGeo, nestMat);
-  nestMesh.position.set(10, 0.8, 70);
-  scene.add(nestMesh);
-
-  // EGG NEST AREA (DANGER ZONE)
-  const wildNest = new THREE.Mesh(new THREE.CylinderGeometry(14, 12, 1.5, 18), new THREE.MeshStandardMaterial({color: 0x5c4033}));
-  wildNest.position.set(0, 0.5, -60);
-  scene.add(wildNest);
-
-  /* =========================================================
-     BUILDING THE BLOCKY "NOOB" AVATAR
-     ========================================================= */
-  function createLimb(w, h, d, color) {
-    const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.5 });
-    const geo = new THREE.BoxGeometry(w, h, d);
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.castShadow = true;
-    return mesh;
+  function switchTab(tab) {
+    document.getElementById('tab-discover').classList.toggle('active', tab === 'discover');
+    document.getElementById('tab-avatar').classList.toggle('active', tab === 'avatar');
+    document.getElementById('page-discover').classList.toggle('active', tab === 'discover');
+    document.getElementById('page-avatar').classList.toggle('active', tab === 'avatar');
   }
 
-  const avatar = new THREE.Group();
-
-  // Classic Roblox Palette: Head: Bright Yellow, Torso: Bright Blue, Legs: Br. Yellowish Green
-  const HEAD_COLOR = 0xf5cd2f;
-  const TORSO_COLOR = 0x0d69ac;
-  const LEG_COLOR = 0x5a9a32;
-
-  // Head
-  const head = createLimb(1.2, 1.2, 1.2, HEAD_COLOR);
-  head.position.y = 3.6;
-  avatar.add(head);
-
-  // Face (Classic smile)
-  const canvasFace = document.createElement('canvas');
-  canvasFace.width = 128; canvasFace.height = 128;
-  const fctx = canvasFace.getContext('2d');
-  fctx.fillStyle = "#f5cd2f"; fctx.fillRect(0,0,128,128);
-  fctx.fillStyle = "#000";
-  fctx.beginPath(); // eyes
-  fctx.arc(36, 45, 8, 0, Math.PI*2); fctx.arc(92, 45, 8, 0, Math.PI*2); fctx.fill();
-  fctx.beginPath(); // smile
-  fctx.arc(64, 70, 32, 0.2, Math.PI - 0.2);
-  fctx.lineWidth = 6; fctx.stroke();
-  const faceTexture = new THREE.CanvasTexture(canvasFace);
-  const facePlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({map: faceTexture, transparent: true}));
-  facePlane.position.set(0, 3.6, 0.61);
-  avatar.add(facePlane);
-
-  // Torso
-  const torso = createLimb(2, 2, 1, TORSO_COLOR);
-  torso.position.y = 2.0;
-  avatar.add(torso);
-
-  // Arms
-  const leftArm = createLimb(1, 2, 1, HEAD_COLOR);
-  leftArm.position.set(-1.5, 2.0, 0);
-  avatar.add(leftArm);
-
-  const rightArm = createLimb(1, 2, 1, HEAD_COLOR);
-  rightArm.position.set(1.5, 2.0, 0);
-  avatar.add(rightArm);
-
-  // Legs
-  const leftLeg = createLimb(1, 2, 1, LEG_COLOR);
-  leftLeg.position.set(-0.5, 0.8, 0);
-  avatar.add(leftLeg);
-
-  const rightLeg = createLimb(1, 2, 1, LEG_COLOR);
-  rightLeg.position.set(0.5, 0.8, 0);
-  avatar.add(rightLeg);
-
-  // Carrying Egg Anchor (above head)
-  const carriedEgg = new THREE.Mesh(
-    new THREE.SphereGeometry(0.9, 16, 16),
-    new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
-  );
-  carriedEgg.scale.set(1, 1.35, 1);
-  carriedEgg.position.set(0, 5.2, 0);
-  carriedEgg.visible = false;
-  avatar.add(carriedEgg);
-
-  avatar.position.set(0, 0, 70);
-  scene.add(avatar);
-
-  /* =========================================================
-     BUILDING THE GUARDIAN CHICKEN MONSTER
-     ========================================================= */
-  const chicken = new THREE.Group();
-  const chickenBody = createLimb(4, 4, 5, 0xffffff);
-  chickenBody.position.y = 3;
-  chicken.add(chickenBody);
-
-  const chickenHead = createLimb(2.2, 2.8, 2.2, 0xffffff);
-  chickenHead.position.set(0, 5.5, -2);
-  chicken.add(chickenHead);
-
-  // Beak & Comb
-  const beak = createLimb(1, 0.7, 1.2, 0xffa500);
-  beak.position.set(0, 5, -3.4);
-  chicken.add(beak);
-
-  const comb = createLimb(0.6, 1.2, 1.6, 0xff0000);
-  comb.position.set(0, 7.2, -2);
-  chicken.add(comb);
-
-  chicken.position.set(0, 0, -60);
-  scene.add(chicken);
-
-  /* =========================================================
-     EGGS IN THE NEST TO STEAL
-     ========================================================= */
-  const eggs = [];
-  const eggData = [
-    { type: 'Common', color: 0xffffff, val: 50, scale: 1, pos: [-4, -60] },
-    { type: 'Golden', color: 0xffd700, val: 200, scale: 1.2, pos: [4, -58] },
-    { type: 'Diamond', color: 0x00e5ff, val: 500, scale: 1.4, pos: [0, -64] }
-  ];
-
-  eggData.forEach((ed, idx) => {
-    const geo = new THREE.SphereGeometry(1.2 * ed.scale, 18, 18);
-    const mat = new THREE.MeshStandardMaterial({ 
-      color: ed.color,
-      roughness: 0.2, 
-      metalness: ed.type !== 'Common' ? 0.7 : 0.1 
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.scale.set(1, 1.35, 1);
-    mesh.position.set(ed.pos[0], 1.5 * ed.scale, ed.pos[1]);
-    mesh.castShadow = true;
-    scene.add(mesh);
-    eggs.push({ mesh, data: ed, initialPos: [...mesh.position.toArray()] });
-  });
-
-  /* =========================================================
-     GAME STATE & LOGIC
-     ========================================================= */
-  let bobux = 250;
-  let eggsStolenTotal = 0;
-  let playerSpeed = 16;
-  let jumpPower = 20;
-  let hasEgg = false;
-  let carriedEggType = null;
-  let chickenFrozen = false;
-
-  // Movement physics
-  let velocityY = 0;
-  const gravity = -50;
-  let isGrounded = true;
-
-  // Keyboard and Mouse inputs
-  const keys = {};
-  let cameraAngleHorizontal = Math.PI; // Look towards -Z
-  let cameraAngleVertical = 0.35;
-  const cameraDistance = 16;
-  let isRightMouseDown = false;
-
-  window.addEventListener('keydown', (e) => {
-    keys[e.code] = true;
-    if (e.code === 'KeyE') handleInteraction();
-  });
-  window.addEventListener('keyup', (e) => keys[e.code] = false);
-
-  window.addEventListener('mousedown', (e) => {
-    if (e.button === 2) isRightMouseDown = true; // Right mouse drag
-  });
-  window.addEventListener('mouseup', (e) => {
-    if (e.button === 2) isRightMouseDown = false;
-  });
-  window.addEventListener('contextmenu', (e) => e.preventDefault());
-
-  window.addEventListener('mousemove', (e) => {
-    if (isRightMouseDown) {
-      cameraAngleHorizontal -= e.movementX * 0.005;
-      cameraAngleVertical += e.movementY * 0.005;
-      cameraAngleVertical = Math.max(0.1, Math.min(Math.PI / 2.2, cameraAngleVertical));
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-  /* =========================================================
-     INTERACTION & MECHANICS
-     ========================================================= */
-  const promptEl = document.getElementById('actionPrompt');
-  const alertEl = document.getElementById('alertBanner');
-
-  function handleInteraction() {
-    if (!hasEgg) {
-      // Check near an egg
-      for (let eggObj of eggs) {
-        if (!eggObj.mesh.visible) continue;
-        const d = avatar.position.distanceTo(eggObj.mesh.position);
-        if (d < 5) {
-          // Steal egg!
-          hasEgg = true;
-          carriedEggType = eggObj.data;
-          carriedEgg.material.color.setHex(eggObj.data.color);
-          carriedEgg.visible = true;
-          eggObj.mesh.visible = false;
-          break;
-        }
-      }
-    }
+  function applySkin(id, icon, name, head, torso, leg, el) {
+    activeSkin = { id, icon, name, headColor: head, torsoColor: torso, legColor: leg };
+    document.querySelectorAll('.skin-item').forEach(item => item.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('avatarPreviewIcon').innerText = icon;
+    document.getElementById('navAvatarIcon').innerText = icon;
+    document.getElementById('currentSkinTitle').innerText = name;
+    update3DAvatarColors();
   }
 
-  /* =========================================================
-     ADMIN ABUSE FUNCTIONS
-     ========================================================= */
+  function launchMiniGame(title, icon, desc) {
+    alert(`🚀 Launching experience: "${title}"\n${desc}\n\nServer connecting... Loaded!`);
+  }
+
   function toggleAdmin() {
     const p = document.getElementById('adminPanel');
     p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  function adminGiveBobux() {
-    bobux += 1000000;
-    updateHUD();
-    alert('⚡ ADMIN: 1,000,000 BOBUX ADDED TO YOUR ROBLOX WALLET!');
-  }
-
-  function adminSuperSpeed() {
-    playerSpeed = 70;
-    updateHUD();
-    alert('⚡ ADMIN: GOD WALKSPEED SET TO 70!');
-  }
-
-  function adminSuperJump() {
-    jumpPower = 45;
-    alert('⚡ ADMIN: SUPER HIGH JUMP ACTIVATED!');
-  }
-
-  function adminSpawnGoldenEgg() {
-    const geo = new THREE.SphereGeometry(3, 18, 18);
-    const mat = new THREE.MeshStandardMaterial({ color: 0xff00ff, roughness: 0.1, metalness: 0.9 });
-    const mythicEgg = new THREE.Mesh(geo, mat);
-    mythicEgg.scale.set(1, 1.4, 1);
-    mythicEgg.position.set(0, 3, 0);
-    scene.add(mythicEgg);
-    eggs.push({
-      mesh: mythicEgg,
-      data: { type: 'MYTHIC VOID', color: 0xff00ff, val: 5000, scale: 2 },
-      initialPos: [0, 3, 0]
-    });
-    alert('✨ ADMIN: ULTRA MYTHIC VOID EGG SPAWNED IN ARENA MID!');
-  }
-
-  function adminFreezeChicken() {
-    chickenFrozen = !chickenFrozen;
-    alert(chickenFrozen ? '❄️ GUARDIAN CHICKENS ARE FROZEN!' : '🔥 GUARDIANS UNFREEZED!');
-  }
-
-  let discoTimer = null;
-  function adminRainbowDisco() {
-    if (discoTimer) {
-      clearInterval(discoTimer);
-      discoTimer = null;
-      baseplateMat.color.setHex(0x5a636a);
-      return;
-    }
-    discoTimer = setInterval(() => {
-      baseplateMat.color.setHex(Math.random() * 0xffffff);
-    }, 200);
-    alert('🌈 DISCO BASEPLATE STARTED!');
-  }
-
-  function updateHUD() {
-    document.getElementById('bobuxCount').innerText = bobux.toLocaleString();
-    document.getElementById('lbStats').innerText = `${eggsStolenTotal} | ${playerSpeed} spd`;
-    document.getElementById('speedDisplay').innerText = `🏃 Speed: ${playerSpeed} | Stolen: ${eggsStolenTotal}`;
+  function addBobux(amount) {
+    bobux += amount;
+    document.getElementById('navBobux').innerText = bobux.toLocaleString();
+    document.getElementById('game3dBobux').innerText = '⬡ ' + bobux.toLocaleString();
+    alert(`💰 ${amount.toLocaleString()} Bobux شامل کر دیے گئے!`);
   }
 
   /* =========================================================
-     MAIN GAME LOOP & ANIMATION
+     THREE.JS 3D ENGINE (STEEL AN EGG WITH CUSTOM CHARACTER)
      ========================================================= */
-  let clock = new THREE.Clock();
-  let walkCycle = 0;
+  let scene, camera, renderer, clock;
+  let avatarGroup, headMesh, torsoMesh, leftArmMesh, rightArmMesh, leftLegMesh, rightLegMesh, carriedEggMesh;
+  let treadmillGroup, tmBelt;
+  let sunLight, moonMesh;
+  let activeEggs = [];
+  let playerSpeed = 16;
+  let eggsStolen = 0;
+  let hasEgg = false;
+  let carriedTier = null;
+  let isGameRunning = false;
 
-  function animate() {
-    requestAnimationFrame(animate);
+  // Night cycle
+  let cycleTimer = 300; // 5 min
+  let isNight = false;
+  let nightMultiplier = 1;
+
+  function init3D() {
+    const container = document.getElementById('webgl-canvas-box');
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x7ec0ee);
+    scene.fog = new THREE.FogExp2(0x7ec0ee, 0.006);
+
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    clock = new THREE.Clock();
+
+    // Lighting
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+    scene.add(hemi);
+
+    sunLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    sunLight.position.set(60, 100, 50);
+    sunLight.castShadow = true;
+    scene.add(sunLight);
+
+    // Moon
+    moonMesh = new THREE.Mesh(new THREE.SphereGeometry(10, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    moonMesh.position.set(0, 140, -180);
+    moonMesh.visible = false;
+    scene.add(moonMesh);
+
+    // Baseplate
+    const bp = new THREE.Mesh(new THREE.PlaneGeometry(350, 350), new THREE.MeshStandardMaterial({ color: 0x474e54, roughness: 0.8 }));
+    bp.rotation.x = -Math.PI / 2;
+    bp.receiveShadow = true;
+    scene.add(bp);
+
+    const grid = new THREE.GridHelper(350, 70, 0x333a40, 0x3d444b);
+    grid.position.y = 0.02;
+    scene.add(grid);
+
+    // Base & Safezone
+    const base = new THREE.Mesh(new THREE.BoxGeometry(45, 1.2, 45), new THREE.MeshStandardMaterial({ color: 0x1f2326 }));
+    base.position.set(0, 0.6, 75);
+    scene.add(base);
+
+    const border = new THREE.Mesh(new THREE.BoxGeometry(47, 0.8, 47), new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true }));
+    border.position.set(0, 0.8, 75);
+    scene.add(border);
+
+    // Drop Nest
+    const nest = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 3.5, 1.4, 18), new THREE.MeshStandardMaterial({ color: 0xd4a373 }));
+    nest.position.set(12, 1, 75);
+    scene.add(nest);
+
+    // Treadmill
+    treadmillGroup = new THREE.Group();
+    const tmFrame = new THREE.Mesh(new THREE.BoxGeometry(7, 1, 14), new THREE.MeshStandardMaterial({ color: 0x111 }));
+    tmBelt = new THREE.Mesh(new THREE.BoxGeometry(5.2, 1.15, 12), new THREE.MeshStandardMaterial({ color: 0x00e5ff }));
+    treadmillGroup.add(tmFrame, tmBelt);
+    treadmillGroup.position.set(-11, 0.6, 75);
+    scene.add(treadmillGroup);
+
+    // Build Character
+    buildAvatar();
+
+    // Populate Eggs
+    populateTierEggs();
+
+    // Inputs
+    setupControls();
+  }
+
+  function buildAvatar() {
+    avatarGroup = new THREE.Group();
+
+    headMesh = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 1.2), new THREE.MeshStandardMaterial({ color: activeSkin.headColor }));
+    headMesh.position.y = 3.6;
+    avatarGroup.add(headMesh);
+
+    torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.torsoColor }));
+    torsoMesh.position.y = 2.0;
+    avatarGroup.add(torsoMesh);
+
+    leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.headColor }));
+    leftArmMesh.position.set(-1.5, 2.0, 0);
+    avatarGroup.add(leftArmMesh);
+
+    rightArmMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.headColor }));
+    rightArmMesh.position.set(1.5, 2.0, 0);
+    avatarGroup.add(rightArmMesh);
+
+    leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.legColor }));
+    leftLegMesh.position.set(-0.5, 0.8, 0);
+    avatarGroup.add(leftLegMesh);
+
+    rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.legColor }));
+    rightLegMesh.position.set(0.5, 0.8, 0);
+    avatarGroup.add(rightLegMesh);
+
+    carriedEggMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), new THREE.MeshStandardMaterial({ roughness: 0.2 }));
+    carriedEggMesh.scale.set(1, 1.35, 1);
+    carriedEggMesh.position.set(0, 5.3, 0);
+    carriedEggMesh.visible = false;
+    avatarGroup.add(carriedEggMesh);
+
+    avatarGroup.position.set(0, 0, 75);
+    scene.add(avatarGroup);
+  }
+
+  function update3DAvatarColors() {
+    if (!headMesh) return;
+    headMesh.material.color.setHex(activeSkin.headColor);
+    leftArmMesh.material.color.setHex(activeSkin.headColor);
+    rightArmMesh.material.color.setHex(activeSkin.headColor);
+    torsoMesh.material.color.setHex(activeSkin.torsoColor);
+    leftLegMesh.material.color.setHex(activeSkin.legColor);
+    rightLegMesh.material.color.setHex(activeSkin.legColor);
+  }
+
+  /* EGG SPAWN & TIERS */
+  const EGG_TYPES = {
+    RARE: { name: 'Rare Egg', color: 0x00b0ff, value: 500, scale: 1.1 },
+    INFERNAL: { name: 'Infernal Egg', color: 0xff3d00, value: 1500, scale: 1.3 },
+    DIVINE: { name: 'Divine Egg', color: 0xffd700, value: 5000, scale: 1.6 },
+    SECRET: { name: 'Secret Egg', color: 0x9c27b0, value: 20000, scale: 2.0 }
+  };
+
+  function create3DEgg(typeKey, x, z) {
+    const t = EGG_TYPES[typeKey];
+    const grp = new THREE.Group();
+    const m = new THREE.Mesh(new THREE.SphereGeometry(1.1 * t.scale, 18, 18), new THREE.MeshStandardMaterial({ color: t.color, emissive: t.color, emissiveIntensity: 0.4 }));
+    m.scale.set(1, 1.35, 1);
+    grp.add(m);
+
+    if (typeKey === 'DIVINE' || typeKey === 'SECRET') {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8 * t.scale, 0.12, 8, 30), new THREE.MeshBasicMaterial({ color: t.color }));
+      ring.rotation.x = Math.PI / 2;
+      grp.add(ring);
+      grp.userData.ring = ring;
+    }
+
+    grp.position.set(x, 1.4 * t.scale, z);
+    grp.userData.tier = t;
+    scene.add(grp);
+    activeEggs.push(grp);
+  }
+
+  function populateTierEggs() {
+    const pts = [[-30, -50], [0, -65], [30, -50], [-20, -20], [20, -20], [0, -35]];
+    pts.forEach((p, idx) => {
+      let k = 'RARE';
+      if (idx === 1) k = 'DIVINE';
+      if (idx === 2) k = 'INFERNAL';
+      if (idx === 3) k = 'SECRET';
+      create3DEgg(k, p[0], p[1]);
+    });
+  }
+
+  /* CONTROLS */
+  const keys = {};
+  let camH = Math.PI, camV = 0.35, camDist = 18;
+  let isRDown = false;
+  let velY = 0, isGrounded = true;
+
+  function setupControls() {
+    window.addEventListener('keydown', e => {
+      keys[e.code] = true;
+      if (e.code === 'KeyE') checkEggPickup();
+    });
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    window.addEventListener('mousedown', e => { if (e.button === 2) isRDown = true; });
+    window.addEventListener('mouseup', e => { if (e.button === 2) isRDown = false; });
+    window.addEventListener('contextmenu', e => e.preventDefault());
+
+    window.addEventListener('mousemove', e => {
+      if (isRDown && isGameRunning) {
+        camH -= e.movementX * 0.005;
+        camV += e.movementY * 0.005;
+        camV = Math.max(0.1, Math.min(Math.PI / 2.2, camV));
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (renderer && camera) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    });
+  }
+
+  function checkEggPickup() {
+    if (hasEgg) return;
+    for (let i = 0; i < activeEggs.length; i++) {
+      const eg = activeEggs[i];
+      if (avatarGroup.position.distanceTo(eg.position) < 5.5) {
+        hasEgg = true;
+        carriedTier = eg.userData.tier;
+        carriedEggMesh.material.color.setHex(carriedTier.color);
+        carriedEggMesh.visible = true;
+        scene.remove(eg);
+        activeEggs.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  function start3DGame() {
+    document.getElementById('game3dScreen').style.display = 'block';
+    isGameRunning = true;
+    update3DAvatarColors();
+    if (!scene) init3D();
+  }
+
+  function exit3DGame() {
+    document.getElementById('game3dScreen').style.display = 'none';
+    isGameRunning = false;
+  }
+
+  function forceNightToggle() {
+    if (isNight) {
+      isNight = false;
+      nightMultiplier = 1;
+      scene.background.setHex(0x7ec0ee);
+      sunLight.intensity = 0.9;
+      moonMesh.visible = false;
+      document.getElementById('gameNightBanner').style.display = 'none';
+    } else {
+      isNight = true;
+      nightMultiplier = 30;
+      scene.background.setHex(0x060814);
+      sunLight.intensity = 0.2;
+      moonMesh.visible = true;
+      document.getElementById('gameNightBanner').style.display = 'block';
+    }
+    updateHudText();
+  }
+
+  function boostSpeed(val) {
+    playerSpeed = val;
+    updateHudText();
+  }
+
+  function spawnDivineCluster() {
+    create3DEgg('DIVINE', 0, -20);
+    create3DEgg('SECRET', 10, -20);
+    alert('✨ Divine & Secret Eggs Spawned!');
+  }
+
+  function updateHudText() {
+    document.getElementById('gameActionHud').innerHTML = `🏃 سپیڈ: ${Math.floor(playerSpeed)}<br><span style="font-size:12px; color:${isNight ? '#ff0055' : '#ffeb3b'};">⚡ ملٹی پلائر: ${nightMultiplier}X ${isNight ? '(رات ایکٹو)' : ''}</span>`;
+  }
+
+  /* GAME RENDER LOOP */
+  let walkA = 0;
+  function renderLoop() {
+    requestAnimationFrame(renderLoop);
+    if (!isGameRunning || !scene) return;
+
     const dt = Math.min(clock.getDelta(), 0.1);
 
-    // 1. WASD Movement in Camera Plane
-    const forward = new THREE.Vector3(-Math.sin(cameraAngleHorizontal), 0, -Math.cos(cameraAngleHorizontal)).normalize();
-    const right = new THREE.Vector3(-forward.z, 0, forward.x);
-    const moveDir = new THREE.Vector3();
-
-    if (keys['KeyW'] || keys['ArrowUp']) moveDir.add(forward);
-    if (keys['KeyS'] || keys['ArrowDown']) moveDir.sub(forward);
-    if (keys['KeyD'] || keys['ArrowRight']) moveDir.add(right);
-    if (keys['KeyA'] || keys['ArrowLeft']) moveDir.sub(right);
-
-    const isMoving = moveDir.lengthSq() > 0;
-    if (isMoving) {
-      moveDir.normalize();
-      avatar.position.addScaledVector(moveDir, playerSpeed * dt);
-      // Turn avatar in moving direction
-      avatar.rotation.y = Math.atan2(moveDir.x, moveDir.z);
-
-      // Roblox Limb Swing Animation
-      walkCycle += dt * (playerSpeed * 0.7);
-      leftArm.rotation.x = Math.sin(walkCycle) * 0.7;
-      rightArm.rotation.x = -Math.sin(walkCycle) * 0.7;
-      leftLeg.rotation.x = -Math.sin(walkCycle) * 0.7;
-      rightLeg.rotation.x = Math.sin(walkCycle) * 0.7;
-    } else {
-      leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, 0, 0.2);
-      rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, 0, 0.2);
-      leftLeg.rotation.x = THREE.MathUtils.lerp(leftLeg.rotation.x, 0, 0.2);
-      rightLeg.rotation.x = THREE.MathUtils.lerp(rightLeg.rotation.x, 0, 0.2);
+    // Night Timer (Every 5 mins)
+    cycleTimer -= dt;
+    if (cycleTimer <= 0) {
+      forceNightToggle();
+      cycleTimer = isNight ? 60 : 300;
     }
 
-    // 2. Jumping & Gravity Physics
+    // WASD Move
+    const fwd = new THREE.Vector3(-Math.sin(camH), 0, -Math.cos(camH)).normalize();
+    const right = new THREE.Vector3(-fwd.z, 0, fwd.x);
+    const mDir = new THREE.Vector3();
+
+    if (keys['KeyW'] || keys['ArrowUp']) mDir.add(fwd);
+    if (keys['KeyS'] || keys['ArrowDown']) mDir.sub(fwd);
+    if (keys['KeyD'] || keys['ArrowRight']) mDir.add(right);
+    if (keys['KeyA'] || keys['ArrowLeft']) mDir.sub(right);
+
+    if (mDir.lengthSq() > 0) {
+      mDir.normalize();
+      avatarGroup.position.addScaledVector(mDir, playerSpeed * dt);
+      avatarGroup.rotation.y = Math.atan2(mDir.x, mDir.z);
+
+      walkA += dt * (playerSpeed * 0.5);
+      leftArmMesh.rotation.x = Math.sin(walkA) * 0.7;
+      rightArmMesh.rotation.x = -Math.sin(walkA) * 0.7;
+      leftLegMesh.rotation.x = -Math.sin(walkA) * 0.7;
+      rightLegMesh.rotation.x = Math.sin(walkA) * 0.7;
+    }
+
+    // Jump
     if (keys['Space'] && isGrounded) {
-      velocityY = jumpPower;
+      velY = 24;
       isGrounded = false;
     }
-    velocityY += gravity * dt;
-    avatar.position.y += velocityY * dt;
-    if (avatar.position.y <= 0) {
-      avatar.position.y = 0;
-      velocityY = 0;
+    velY -= 55 * dt;
+    avatarGroup.position.y += velY * dt;
+    if (avatarGroup.position.y <= 0) {
+      avatarGroup.position.y = 0;
+      velY = 0;
       isGrounded = true;
     }
 
-    // 3. Third-Person Roblox Camera Follow
-    const camOffset = new THREE.Vector3(
-      Math.sin(cameraAngleHorizontal) * Math.cos(cameraAngleVertical) * cameraDistance,
-      Math.sin(cameraAngleVertical) * cameraDistance + 3,
-      Math.cos(cameraAngleHorizontal) * Math.cos(cameraAngleVertical) * cameraDistance
+    // Camera follow
+    const offset = new THREE.Vector3(
+      Math.sin(camH) * Math.cos(camV) * camDist,
+      Math.sin(camV) * camDist + 3.5,
+      Math.cos(camH) * Math.cos(camV) * camDist
     );
-    camera.position.copy(avatar.position).add(camOffset);
-    camera.lookAt(avatar.position.x, avatar.position.y + 3, avatar.position.z);
+    camera.position.copy(avatarGroup.position).add(offset);
+    camera.lookAt(avatarGroup.position.x, avatarGroup.position.y + 3, avatarGroup.position.z);
 
-    // 4. Treadmill Training in Base (Stand on treadmill to gain Speed)
-    if (Math.abs(avatar.position.x - tmGroup.position.x) < 3 && Math.abs(avatar.position.z - tmGroup.position.z) < 4) {
-      playerSpeed += dt * 3; // level up walkspeed
-      updateHUD();
+    // Treadmill 30X Boost Logic
+    const onTm = Math.abs(avatarGroup.position.x - treadmillGroup.position.x) < 3.2 &&
+                 Math.abs(avatarGroup.position.z - treadmillGroup.position.z) < 6;
+    if (onTm) {
+      playerSpeed += (2.0 * nightMultiplier) * dt;
+      updateHudText();
     }
 
-    // 5. Check if Safe in Base
-    const inSafeZone = avatar.position.z > 50;
-
-    // 6. Delivering Stolen Egg to Nest in Base
-    if (hasEgg && inSafeZone && avatar.position.distanceTo(nestMesh.position) < 5) {
-      eggsStolenTotal++;
-      bobux += carriedEggType.val;
+    // Bank Egg to base
+    if (hasEgg && avatarGroup.position.z > 52 && avatarGroup.position.distanceTo(new THREE.Vector3(12, 1, 75)) < 6) {
+      eggsStolen++;
+      addBobux(carriedTier.value);
       hasEgg = false;
-      carriedEgg.visible = false;
-      updateHUD();
-
-      // Respawn egg after 3 seconds
-      const eggRef = eggs.find(e => e.data.type === carriedEggType.type);
-      if (eggRef) {
-        setTimeout(() => {
-          eggRef.mesh.visible = true;
-        }, 3000);
-      }
-      carriedEggType = null;
+      carriedEggMesh.visible = false;
+      carriedTier = null;
     }
 
-    // 7. AI Guardian Chicken Logic
-    if (!chickenFrozen) {
-      const distToPlayer = chicken.position.distanceTo(avatar.position);
-      // Aggro if player has egg or is outside safe zone & close
-      const shouldChase = hasEgg || (!inSafeZone && distToPlayer < 45);
-
-      if (shouldChase && !inSafeZone) {
-        alertEl.style.display = 'block';
-        const chkDir = new THREE.Vector3().subVectors(avatar.position, chicken.position).normalize();
-        chkDir.y = 0;
-        chicken.position.addScaledVector(chkDir, 14 * dt);
-        chicken.rotation.y = Math.atan2(chkDir.x, chkDir.z);
-
-        // Caught by chicken! (Roblox Oof / Scrambled)
-        if (distToPlayer < 3.5) {
-          avatar.position.set(0, 0, 70); // respawn at base
-          if (hasEgg) {
-            hasEgg = false;
-            carriedEgg.visible = false;
-            const eggRef = eggs.find(e => e.data.type === carriedEggType.type);
-            if (eggRef) eggRef.mesh.visible = true;
-            carriedEggType = null;
-          }
-          alert('💥 OOF! THE GUARDIAN SCRAMBLED YOU! EGG DROPPED!');
-        }
-      } else {
-        alertEl.style.display = 'none';
-        // Roam back to wild nest
-        const nestTarget = new THREE.Vector3(0, 0, -60);
-        if (chicken.position.distanceTo(nestTarget) > 3) {
-          const retDir = new THREE.Vector3().subVectors(nestTarget, chicken.position).normalize();
-          chicken.position.addScaledVector(retDir, 6 * dt);
-          chicken.rotation.y = Math.atan2(retDir.x, retDir.z);
-        }
-      }
-    }
-
-    // 8. Action Prompt indicator
-    let nearAnyEgg = false;
-    if (!hasEgg) {
-      for (let eggObj of eggs) {
-        if (eggObj.mesh.visible && avatar.position.distanceTo(eggObj.mesh.position) < 5) {
-          nearAnyEgg = true;
-          promptEl.innerText = `[E] STEAL ${eggObj.data.type.toUpperCase()} EGG!`;
-          promptEl.style.display = 'block';
-          break;
-        }
-      }
-    } else {
-      if (inSafeZone && avatar.position.distanceTo(nestMesh.position) < 8) {
-        promptEl.innerText = `DELIVERING EGG TO NEST...`;
-        promptEl.style.display = 'block';
-        nearAnyEgg = true;
-      }
-    }
-    if (!nearAnyEgg) promptEl.style.display = 'none';
+    // Spin divine egg rings
+    activeEggs.forEach(eg => {
+      if (eg.userData.ring) eg.userData.ring.rotation.z += 0.05;
+    });
 
     renderer.render(scene, camera);
   }
 
-  updateHUD();
-  animate();
+  renderLoop();
 </script>
 </body>
 </html>
