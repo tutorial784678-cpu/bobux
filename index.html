@@ -3,933 +3,844 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bobux - Steel an Egg Edition</title>
+<title>Roblox: Steal an Egg (Bobux Edition)</title>
 <style>
-  :root {
-    --bg-main: #191b1d;
-    --bg-card: #232527;
-    --bg-card-hover: #32353b;
-    --nav-bg: #111214;
-    --sidebar-bg: #18191c;
-    --accent-green: #00b06f;
-    --accent-green-hover: #00c87f;
-    --accent-blue: #00a2ff;
-    --accent-red: #f04438;
-    --text-white: #ffffff;
-    --text-muted: #999ea5;
-    --border-color: #2b2d31;
-    --gold: #f5b800;
-  }
-
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 
-  body {
-    background: var(--bg-main);
-    color: var(--text-white);
-    min-height: 100vh;
-    overflow-x: hidden;
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
   }
 
-  /* TOP NAVIGATION */
-  .navbar {
-    height: 54px;
-    background: var(--nav-bg);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
+  #webgl-container {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* CLASSIC ROBLOX TOP BAR */
+  .rbx-topbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    height: 46px;
+    background: rgba(25, 27, 29, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
     z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .nav-left, .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    color: #fff;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-
-  .bobux-icon {
-    width: 22px;
-    height: 22px;
-    background: var(--gold);
-    border-radius: 4px;
-    transform: rotate(15deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    color: #000;
-    font-size: 13px;
-  }
-
-  .nav-links a {
-    color: var(--text-white);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background 0.2s;
-  }
-
-  .nav-links a:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .search-bar {
-    background: #232527;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 6px 14px;
-    color: #fff;
-    width: 260px;
-    outline: none;
-    font-size: 13px;
-  }
-
-  .bobux-counter {
-    background: #232527;
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 14px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border: 1px solid var(--border-color);
-  }
-
-  .admin-toggle-btn {
-    background: #7a1cd8;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 0 10px rgba(122, 28, 216, 0.5);
-    transition: 0.2s;
-  }
-
-  .admin-toggle-btn:hover {
-    transform: scale(1.05);
-  }
-
-  /* LAYOUT */
-  .app-container {
-    display: flex;
-    margin-top: 54px;
-  }
-
-  .sidebar {
-    width: 200px;
-    background: var(--sidebar-bg);
-    height: calc(100vh - 54px);
-    position: fixed;
-    border-right: 1px solid var(--border-color);
-    padding: 16px 10px;
-  }
-
-  .sidebar a {
+  .rbx-left, .rbx-right {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 14px;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 8px;
-    margin-bottom: 4px;
   }
 
-  .sidebar a:hover, .sidebar a.active {
-    background: #232527;
-    color: #fff;
-  }
-
-  .main-content {
-    margin-left: 200px;
-    padding: 24px 36px;
-    width: calc(100% - 200px);
-  }
-
-  /* FEATURED TOP GAME: STEEL AN EGG */
-  .featured-container {
-    background: linear-gradient(135deg, #1b2838 0%, #201a35 100%);
-    border-radius: 16px;
-    overflow: hidden;
-    display: flex;
-    border: 1px solid #3b3f49;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-    margin-bottom: 36px;
-    position: relative;
-  }
-
-  .featured-badge {
-    position: absolute;
-    top: 14px;
-    left: 14px;
+  .rbx-logo-btn {
+    width: 32px;
+    height: 32px;
     background: #e91e63;
-    color: white;
-    font-size: 11px;
-    font-weight: 900;
-    padding: 4px 10px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-  }
-
-  .featured-art {
-    width: 55%;
-    min-height: 280px;
-    background: url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?auto=format&fit=crop&w=1200&q=80') center/cover;
-    position: relative;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .egg-overlay {
-    font-size: 90px;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
-    animation: eggFloat 2.5s ease-in-out infinite;
-  }
-
-  @keyframes eggFloat {
-    0%, 100% { transform: translateY(0) rotate(-4deg); }
-    50% { transform: translateY(-15px) rotate(6deg); }
-  }
-
-  .featured-info {
-    padding: 32px;
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .featured-info h1 {
-    font-size: 32px;
-    font-weight: 900;
-    margin-bottom: 8px;
-  }
-
-  .creator-tag {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 16px;
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-  }
-
-  .play-btn {
-    background: var(--accent-green);
-    color: white;
-    border: none;
-    padding: 12px 32px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: 0.2s;
-    width: fit-content;
-  }
-
-  .play-btn:hover {
-    background: var(--accent-green-hover);
-    transform: translateY(-2px);
-  }
-
-  /* GAME GRIDS */
-  .section-title {
     font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .game-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 16px;
-    margin-bottom: 36px;
-  }
-
-  .game-card {
-    background: var(--bg-card);
-    border-radius: 10px;
-    overflow: hidden;
+    font-weight: 900;
+    color: #fff;
     cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
-    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(233, 30, 99, 0.5);
   }
 
-  .game-card:hover {
-    background: var(--bg-card-hover);
-    transform: translateY(-4px);
-  }
-
-  .game-thumb {
-    width: 100%;
-    aspect-ratio: 1/1;
-    background-size: cover;
-    background-position: center;
-    position: relative;
+  .health-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 50px;
+    gap: 8px;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
   }
 
-  .game-details {
-    padding: 10px;
-  }
-
-  .game-title {
-    font-size: 14px;
-    font-weight: 700;
-    white-space: nowrap;
+  .health-bar-bg {
+    width: 130px;
+    height: 10px;
+    background: #333;
+    border-radius: 5px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 4px;
   }
 
-  .game-stats {
-    font-size: 11px;
-    color: var(--text-muted);
+  .health-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: #00b06f;
+    transition: width 0.2s;
+  }
+
+  .bobux-pill {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     gap: 6px;
   }
 
-  /* PLAY MODAL (MINI-GAME CANVAS) */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .game-window {
-    background: #1b1d20;
-    width: 680px;
-    border-radius: 14px;
-    border: 2px solid #33373d;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-  }
-
-  .window-header {
-    background: #111214;
-    padding: 12px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-  .close-window-btn {
-    background: none;
-    border: none;
+  .admin-btn {
+    background: linear-gradient(135deg, #7928ca, #ff0080);
     color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-  }
-
-  #gameCanvas {
-    display: block;
-    background: #25282f;
-    margin: 0 auto;
-  }
-
-  .game-controls-hint {
-    padding: 10px 18px;
+    border: none;
     font-size: 12px;
-    color: var(--text-muted);
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  /* LEADERBOARD (TOP RIGHT) */
+  .rbx-leaderboard {
+    position: fixed;
+    top: 56px;
+    right: 14px;
+    width: 220px;
+    background: rgba(25, 27, 29, 0.85);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 12px;
+    padding: 10px;
+    z-index: 90;
+  }
+
+  .lb-header {
+    font-weight: 800;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 6px;
     display: flex;
     justify-content: space-between;
+    color: #aaa;
+  }
+
+  .lb-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-weight: 600;
+  }
+
+  /* ACTION PROMPT (PRESS E TO STEAL) */
+  .action-prompt {
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #00e5ff;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 900;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+  }
+
+  /* BOTTOM NOTIFICATIONS & CONTROLS INFO */
+  .controls-hud {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(0,0,0,0.65);
+    color: #ccc;
+    font-size: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    z-index: 90;
+    line-height: 1.6;
+  }
+
+  .alert-banner {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(220, 20, 60, 0.9);
+    padding: 8px 24px;
+    color: white;
+    font-weight: 800;
+    border-radius: 20px;
+    font-size: 14px;
+    display: none;
+    z-index: 100;
   }
 
   /* ADMIN PANEL MODAL */
   .admin-panel {
     position: fixed;
-    top: 60px;
-    right: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 360px;
     background: #18191c;
-    border: 2px solid #7a1cd8;
+    border: 2px solid #ff0080;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(122, 28, 216, 0.4);
-    z-index: 999;
+    box-shadow: 0 0 35px rgba(255, 0, 128, 0.4);
+    z-index: 1000;
     display: none;
     flex-direction: column;
     overflow: hidden;
   }
 
   .admin-header {
-    background: #7a1cd8;
-    padding: 12px 16px;
+    background: linear-gradient(90deg, #7928ca, #ff0080);
+    padding: 10px 16px;
+    color: #fff;
+    font-weight: 900;
+    font-size: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-weight: 900;
-    font-size: 13px;
-    letter-spacing: 1px;
   }
 
   .admin-body {
     padding: 16px;
-    max-height: 80vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .admin-group {
-    margin-bottom: 16px;
-    border-bottom: 1px solid #2b2d31;
-    padding-bottom: 12px;
-  }
-
-  .admin-group h3 {
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #b085f5;
-    margin-bottom: 8px;
-  }
-
-  .admin-input {
-    width: 100%;
-    background: #232527;
-    border: 1px solid var(--border-color);
-    padding: 8px 10px;
-    border-radius: 6px;
+  .admin-body button {
+    background: #2b2d31;
+    border: 1px solid #444;
     color: white;
-    font-size: 13px;
-    margin-bottom: 8px;
-  }
-
-  .admin-btn {
-    background: #32353b;
-    border: 1px solid #454950;
-    color: #fff;
-    padding: 8px 12px;
+    font-weight: bold;
+    padding: 9px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
-    font-weight: 700;
-    width: 100%;
-    margin-bottom: 6px;
-    text-align: center;
     transition: 0.15s;
+    font-size: 13px;
   }
 
-  .admin-btn:hover {
-    background: #474b54;
+  .admin-body button:hover {
+    background: #ff0080;
+    border-color: #ff0080;
   }
 
-  .admin-btn.danger {
-    background: #d82c20;
-    border-color: #f04438;
-  }
-
-  .admin-btn.danger:hover {
-    background: #b52217;
-  }
-
-  .admin-btn.gold {
-    background: #d99b00;
-    color: black;
-    border: none;
-  }
-
-  .admin-btn.gold:hover {
-    background: #f5b800;
-  }
-
-  /* ADMIN ABUSE FX */
-  .marquee-alert {
+  /* JUMP BUTTON / STATUS */
+  .speed-indicator {
     position: fixed;
-    top: 54px;
-    left: 0;
-    right: 0;
-    background: #f04438;
-    color: white;
-    font-weight: 900;
-    text-transform: uppercase;
-    padding: 6px 0;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: #00e5ff;
+    font-weight: 800;
+    font-size: 14px;
     z-index: 90;
-    text-align: center;
-    display: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  }
-
-  .earthquake {
-    animation: shake 0.1s infinite !important;
-  }
-
-  @keyframes shake {
-    0% { transform: translate(3px, 1px) rotate(0.5deg); }
-    50% { transform: translate(-2px, -3px) rotate(-0.5deg); }
-    100% { transform: translate(1px, 2px) rotate(0deg); }
-  }
-
-  .disco-active {
-    animation: discoBg 0.3s infinite !important;
-  }
-
-  @keyframes discoBg {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
-  }
-
-  .falling-egg {
-    position: fixed;
-    font-size: 38px;
-    z-index: 9999;
-    pointer-events: none;
-    animation: eggFall 2s linear forwards;
-  }
-
-  @keyframes eggFall {
-    0% { top: -50px; transform: rotate(0deg); }
-    100% { top: 110vh; transform: rotate(360deg); }
-  }
-
-  /* BAN MODAL */
-  .ban-screen {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    z-index: 10000;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .ban-card {
-    background: #232527;
-    border-radius: 12px;
-    padding: 30px;
-    max-width: 450px;
-    border: 2px solid #f04438;
-  }
-
-  .ban-title {
-    color: #f04438;
-    font-size: 26px;
-    font-weight: 900;
-    margin-bottom: 10px;
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-  <!-- ADMIN BROADCAST BAR -->
-  <div class="marquee-alert" id="systemBroadcast">⚠️ ADMIN ABUSE BROADCAST: ALL BOBUS RESERVES SEIZED BY THE NOOB ARMY!</div>
-
-  <!-- TOP NAVBAR -->
-  <header class="navbar">
-    <div class="nav-left">
-      <div class="logo" onclick="location.reload()">
-        <div class="bobux-icon">B</div>
-        Bobux
-      </div>
-      <nav class="nav-links">
-        <a href="#">Discover</a>
-        <a href="#">Marketplace</a>
-        <a href="#">Create</a>
-      </nav>
-      <input type="text" class="search-bar" placeholder="Search games, eggs, friends...">
-    </div>
-
-    <div class="nav-right">
-      <div class="bobux-counter">
-        <div class="bobux-icon">B</div>
-        <span id="bobuxAmount">4,200</span>
-      </div>
-      <button class="admin-toggle-btn" onclick="toggleAdminPanel()">⚡ Admin Panel</button>
-      <div style="width: 32px; height: 32px; border-radius: 50%; background: #00a2ff; display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:pointer;">
-        😎
+  <!-- ROBLOX TOPBAR -->
+  <div class="rbx-topbar">
+    <div class="rbx-left">
+      <div class="rbx-logo-btn" title="Roblox Menu">🥚</div>
+      <div class="health-container">
+        <span style="font-size:12px;">❤️</span>
+        <div class="health-bar-bg"><div class="health-bar-fill" id="hpFill"></div></div>
       </div>
     </div>
-  </header>
-
-  <div class="app-container">
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-      <a href="#" class="active">🏠 Home</a>
-      <a href="#">🎮 Discover</a>
-      <a href="#">👕 Avatar</a>
-      <a href="#">💬 Messages</a>
-      <a href="#">👥 Friends</a>
-      <a href="#">🏆 Badges</a>
-      <a href="#">⚙️ Settings</a>
-    </aside>
-
-    <!-- MAIN DASHBOARD -->
-    <main class="main-content">
-      
-      <!-- TOP HIGHLIGHT: STEEL AN EGG -->
-      <section class="featured-container" id="featuredSection">
-        <div class="featured-badge">🔥 #1 TOP RATED GAME</div>
-        <div class="featured-art">
-          <div class="egg-overlay">🥚</div>
-        </div>
-        <div class="featured-info">
-          <h1 id="featuredGameTitle">Steel an egg</h1>
-          <div class="creator-tag">By <strong>@EggThief_Studio</strong> • Verified Creator</div>
-          <div class="stats-row">
-            <span>👍 99% Likes</span>
-            <span>👥 142.8K Playing</span>
-            <span>🥚 8.2M Stolen</span>
-          </div>
-          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
-            Sneak past the giant guard chickens, steel the legendary Diamond Egg, and escape back to your spaceship before you get scrambled!
-          </p>
-          <button class="play-btn" onclick="launchGame()">
-            <span>▶</span> Play "Steel an egg"
-          </button>
-        </div>
-      </section>
-
-      <!-- CONTINUE PLAYING -->
-      <div class="section-title">
-        <span>Recommended For You</span>
+    <div class="rbx-right">
+      <div class="bobux-pill">
+        <span>⬡</span>
+        <span id="bobuxCount">250</span> Bobux
       </div>
-      <div class="game-grid" id="gameGrid">
-        <!-- Game 1 -->
-        <div class="game-card" onclick="alert('Launching Natural Bobux Disaster...')">
-          <div class="game-thumb" style="background:#3e2723;">🌪️</div>
-          <div class="game-details">
-            <div class="game-title">Natural Bobux Disaster</div>
-            <div class="game-stats">👍 94% • 👥 22.4K</div>
-          </div>
-        </div>
-
-        <!-- Game 2 -->
-        <div class="game-card" onclick="alert('Launching Work at a Bobux Pizza Place...')">
-          <div class="game-thumb" style="background:#bf360c;">🍕</div>
-          <div class="game-details">
-            <div class="game-title">Work at Pizza Place</div>
-            <div class="game-stats">👍 91% • 👥 18.2K</div>
-          </div>
-        </div>
-
-        <!-- Game 3 -->
-        <div class="game-card" onclick="alert('Launching Pet Simulator Egg Edition...')">
-          <div class="game-thumb" style="background:#004d40;">🐾</div>
-          <div class="game-details">
-            <div class="game-title">Egg Pet Hatchery X</div>
-            <div class="game-stats">👍 89% • 👥 31.9K</div>
-          </div>
-        </div>
-
-        <!-- Game 4 -->
-        <div class="game-card" onclick="alert('Launching Escape Evil Guard Obby...')">
-          <div class="game-thumb" style="background:#1a237e;">🏃</div>
-          <div class="game-details">
-            <div class="game-title">Escape Evil Guard Obby</div>
-            <div class="game-stats">👍 87% • 👥 12.3K</div>
-          </div>
-        </div>
-
-        <!-- Game 5 -->
-        <div class="game-card" onclick="alert('Launching Murder Mystery Bobux...')">
-          <div class="game-thumb" style="background:#880e4f;">🔪</div>
-          <div class="game-details">
-            <div class="game-title">Mystery In Egg Town</div>
-            <div class="game-stats">👍 93% • 👥 45.1K</div>
-          </div>
-        </div>
-      </div>
-
-    </main>
-  </div>
-
-  <!-- PLAYABLE MINI-GAME WINDOW -->
-  <div class="modal-overlay" id="gameModal">
-    <div class="game-window">
-      <div class="window-header">
-        <span>🎮 Bobux Engine - Playing: "Steel an egg"</span>
-        <button class="close-window-btn" onclick="closeGame()">✕</button>
-      </div>
-      <canvas id="gameCanvas" width="640" height="360"></canvas>
-      <div class="game-controls-hint">
-        <span>Controls: Arrow Keys or WASD to move</span>
-        <span id="miniScore">Eggs Stolen: 0</span>
-      </div>
+      <button class="admin-btn" onclick="toggleAdmin()">⚡ Admin Abuse</button>
     </div>
   </div>
 
-  <!-- ADMIN PANEL & ADMIN ABUSE -->
+  <!-- LEADERBOARD -->
+  <div class="rbx-leaderboard">
+    <div class="lb-header">
+      <span>Players</span>
+      <span>Eggs / Speed</span>
+    </div>
+    <div class="lb-row">
+      <span style="color:#00e5ff;">👑 You (Noob)</span>
+      <span id="lbStats">0 | 16 spd</span>
+    </div>
+    <div class="lb-row">
+      <span>🤖 Guest666</span>
+      <span>14 | 28 spd</span>
+    </div>
+    <div class="lb-row">
+      <span>🍗 MegaChicken</span>
+      <span>BOSS</span>
+    </div>
+  </div>
+
+  <!-- INTERACTION PROMPTS -->
+  <div class="action-prompt" id="actionPrompt">[E] STEAL EGG!</div>
+  <div class="alert-banner" id="alertBanner">⚠️ GUARDIAN IS HUNTING YOU! RUN TO THE BASE!</div>
+
+  <!-- CONTROLS GUIDE -->
+  <div class="controls-hud">
+    <strong>Computer Controls:</strong><br>
+    • <b>W, A, S, D</b>: Walk<br>
+    • <b>SPACE</b>: Jump<br>
+    • <b>Right Mouse Drag</b>: Orbit Camera<br>
+    • <b>E</b>: Steal / Interact<br>
+    • <b>Treadmill</b>: Run on it in your base to upgrade speed!
+  </div>
+
+  <div class="speed-indicator" id="speedDisplay">
+    🏃 Speed: 16 | Level: 1
+  </div>
+
+  <!-- ADMIN ABUSE WINDOW -->
   <div class="admin-panel" id="adminPanel">
     <div class="admin-header">
-      <span>🛡️ BOBUX ADMIN PANEL</span>
-      <span style="cursor:pointer;" onclick="toggleAdminPanel()">✕</span>
+      <span>⚡ BOBUX ADMIN ABUSE v4.0</span>
+      <span style="cursor:pointer;" onclick="toggleAdmin()">✕</span>
     </div>
     <div class="admin-body">
-      
-      <!-- GAME UPDATE TOOL -->
-      <div class="admin-group">
-        <h3>Game Updater</h3>
-        <input type="text" id="updateTitleInput" class="admin-input" placeholder="Change Top Game Title...">
-        <button class="admin-btn" onclick="updateGameTitle()">Update Top Game</button>
-      </div>
-
-      <!-- ECONOMY MODIFIER -->
-      <div class="admin-group">
-        <h3>Economy Abuse</h3>
-        <button class="admin-btn gold" onclick="giveInfiniteBobux()">💰 Give 999,999,999 Bobux</button>
-        <button class="admin-btn" onclick="resetBobux()">Reset Bobux to 0</button>
-      </div>
-
-      <!-- ADMIN ABUSE BUTTONS -->
-      <div class="admin-group">
-        <h3>⚡ Admin Abuse Tools</h3>
-        <input type="text" id="broadcastInput" class="admin-input" placeholder="Custom System Announcement...">
-        <button class="admin-btn danger" onclick="sendBroadcast()">📢 Broadcast Message</button>
-        <button class="admin-btn danger" onclick="toggleEarthquake()">🌋 Trigger Screen Earthquake</button>
-        <button class="admin-btn danger" onclick="rainEggs()">🥚 Rain 100 Eggs On Screen</button>
-        <button class="admin-btn danger" onclick="toggleDisco()">🪩 Disco Screen Flash</button>
-        <button class="admin-btn danger" onclick="fakeBan()">🔨 Ban Hammer Self</button>
-      </div>
-
+      <button onclick="adminGiveBobux()">💰 +1,000,000 Free Bobux</button>
+      <button onclick="adminSuperSpeed()">⚡ God Speed (100 WalkSpeed)</button>
+      <button onclick="adminSuperJump()">🚀 High Gravity Jump (JumpPower 50)</button>
+      <button onclick="adminSpawnGoldenEgg()">✨ Spawn Mythic Giant Egg</button>
+      <button onclick="adminFreezeChicken()">❄️ Freeze / Unfreeze Guardians</button>
+      <button onclick="adminRainbowDisco()">🌈 Trigger Disco Baseplate</button>
     </div>
   </div>
 
-  <!-- FAKE BAN HAMMER SCREEN -->
-  <div class="ban-screen" id="banScreen">
-    <div class="ban-card">
-      <div class="ban-title">ACCOUNT TERMINATED</div>
-      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
-        You were permanently banned by <strong>Admin_Abuser69</strong>.<br>
-        Reason: <em>"Steeling way too many eggs without a egg license."</em>
-      </p>
-      <button class="admin-btn danger" onclick="unbanSelf()">Appeal & Unban</button>
-    </div>
-  </div>
+  <!-- 3D VIEWPORT -->
+  <div id="webgl-container"></div>
 
-  <!-- SCRIPT LOGIC -->
-  <script>
-    let bobux = 4200;
-    let earthquakeActive = false;
-    let discoActive = false;
+<script>
+  /* =========================================================
+     3D ENGINE SETUP (ROBLOX THEME)
+     ========================================================= */
+  const container = document.getElementById('webgl-container');
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x7ec0ee); // Roblox Day Sky Blue
+  scene.fog = new THREE.FogExp2(0x7ec0ee, 0.007);
 
-    // ADMIN TOGGLE
-    function toggleAdminPanel() {
-      const panel = document.getElementById('adminPanel');
-      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+  scene.add(hemiLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(60, 100, 40);
+  dirLight.castShadow = true;
+  dirLight.shadow.mapSize.width = 2048;
+  dirLight.shadow.mapSize.height = 2048;
+  dirLight.shadow.camera.left = -100;
+  dirLight.shadow.camera.right = 100;
+  dirLight.shadow.camera.top = 100;
+  dirLight.shadow.camera.bottom = -100;
+  scene.add(dirLight);
+
+  /* =========================================================
+     ENVIRONMENT & BASEPLATE
+     ========================================================= */
+  // Classic Gray Studded Baseplate
+  const baseplateGeo = new THREE.PlaneGeometry(300, 300);
+  const baseplateMat = new THREE.MeshStandardMaterial({ 
+    color: 0x5a636a, 
+    roughness: 0.8,
+    metalness: 0.1
+  });
+  const baseplate = new THREE.Mesh(baseplateGeo, baseplateMat);
+  baseplate.rotation.x = -Math.PI / 2;
+  baseplate.receiveShadow = true;
+  scene.add(baseplate);
+
+  // Grid texture helper for "Roblox studs" feeling
+  const gridHelper = new THREE.GridHelper(300, 75, 0x3a4046, 0x454c54);
+  gridHelper.position.y = 0.02;
+  scene.add(gridHelper);
+
+  // PLAYER BASE (SAFE ZONE)
+  const baseGeo = new THREE.BoxGeometry(36, 1, 36);
+  const baseMat = new THREE.MeshStandardMaterial({ color: 0x1f2326 });
+  const playerBase = new THREE.Mesh(baseGeo, baseMat);
+  playerBase.position.set(0, 0.5, 70);
+  playerBase.receiveShadow = true;
+  scene.add(playerBase);
+
+  // Safezone Neon Border
+  const borderGeo = new THREE.BoxGeometry(38, 0.6, 38);
+  const borderMat = new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true });
+  const borderMesh = new THREE.Mesh(borderGeo, borderMat);
+  borderMesh.position.set(0, 0.6, 70);
+  scene.add(borderMesh);
+
+  // Treadmill in Base (Train for Speed)
+  const tmGroup = new THREE.Group();
+  const tmBase = new THREE.Mesh(new THREE.BoxGeometry(6, 0.8, 10), new THREE.MeshStandardMaterial({color: 0x222}));
+  const tmBelt = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.9, 8), new THREE.MeshStandardMaterial({color: 0xff0055}));
+  tmGroup.add(tmBase, tmBelt);
+  tmGroup.position.set(-10, 0.8, 70);
+  scene.add(tmGroup);
+
+  // Base Hatch Nest
+  const nestGeo = new THREE.CylinderGeometry(4, 3, 1.2, 16);
+  const nestMat = new THREE.MeshStandardMaterial({ color: 0xd4a373 });
+  const nestMesh = new THREE.Mesh(nestGeo, nestMat);
+  nestMesh.position.set(10, 0.8, 70);
+  scene.add(nestMesh);
+
+  // EGG NEST AREA (DANGER ZONE)
+  const wildNest = new THREE.Mesh(new THREE.CylinderGeometry(14, 12, 1.5, 18), new THREE.MeshStandardMaterial({color: 0x5c4033}));
+  wildNest.position.set(0, 0.5, -60);
+  scene.add(wildNest);
+
+  /* =========================================================
+     BUILDING THE BLOCKY "NOOB" AVATAR
+     ========================================================= */
+  function createLimb(w, h, d, color) {
+    const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.5 });
+    const geo = new THREE.BoxGeometry(w, h, d);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = true;
+    return mesh;
+  }
+
+  const avatar = new THREE.Group();
+
+  // Classic Roblox Palette: Head: Bright Yellow, Torso: Bright Blue, Legs: Br. Yellowish Green
+  const HEAD_COLOR = 0xf5cd2f;
+  const TORSO_COLOR = 0x0d69ac;
+  const LEG_COLOR = 0x5a9a32;
+
+  // Head
+  const head = createLimb(1.2, 1.2, 1.2, HEAD_COLOR);
+  head.position.y = 3.6;
+  avatar.add(head);
+
+  // Face (Classic smile)
+  const canvasFace = document.createElement('canvas');
+  canvasFace.width = 128; canvasFace.height = 128;
+  const fctx = canvasFace.getContext('2d');
+  fctx.fillStyle = "#f5cd2f"; fctx.fillRect(0,0,128,128);
+  fctx.fillStyle = "#000";
+  fctx.beginPath(); // eyes
+  fctx.arc(36, 45, 8, 0, Math.PI*2); fctx.arc(92, 45, 8, 0, Math.PI*2); fctx.fill();
+  fctx.beginPath(); // smile
+  fctx.arc(64, 70, 32, 0.2, Math.PI - 0.2);
+  fctx.lineWidth = 6; fctx.stroke();
+  const faceTexture = new THREE.CanvasTexture(canvasFace);
+  const facePlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({map: faceTexture, transparent: true}));
+  facePlane.position.set(0, 3.6, 0.61);
+  avatar.add(facePlane);
+
+  // Torso
+  const torso = createLimb(2, 2, 1, TORSO_COLOR);
+  torso.position.y = 2.0;
+  avatar.add(torso);
+
+  // Arms
+  const leftArm = createLimb(1, 2, 1, HEAD_COLOR);
+  leftArm.position.set(-1.5, 2.0, 0);
+  avatar.add(leftArm);
+
+  const rightArm = createLimb(1, 2, 1, HEAD_COLOR);
+  rightArm.position.set(1.5, 2.0, 0);
+  avatar.add(rightArm);
+
+  // Legs
+  const leftLeg = createLimb(1, 2, 1, LEG_COLOR);
+  leftLeg.position.set(-0.5, 0.8, 0);
+  avatar.add(leftLeg);
+
+  const rightLeg = createLimb(1, 2, 1, LEG_COLOR);
+  rightLeg.position.set(0.5, 0.8, 0);
+  avatar.add(rightLeg);
+
+  // Carrying Egg Anchor (above head)
+  const carriedEgg = new THREE.Mesh(
+    new THREE.SphereGeometry(0.9, 16, 16),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
+  );
+  carriedEgg.scale.set(1, 1.35, 1);
+  carriedEgg.position.set(0, 5.2, 0);
+  carriedEgg.visible = false;
+  avatar.add(carriedEgg);
+
+  avatar.position.set(0, 0, 70);
+  scene.add(avatar);
+
+  /* =========================================================
+     BUILDING THE GUARDIAN CHICKEN MONSTER
+     ========================================================= */
+  const chicken = new THREE.Group();
+  const chickenBody = createLimb(4, 4, 5, 0xffffff);
+  chickenBody.position.y = 3;
+  chicken.add(chickenBody);
+
+  const chickenHead = createLimb(2.2, 2.8, 2.2, 0xffffff);
+  chickenHead.position.set(0, 5.5, -2);
+  chicken.add(chickenHead);
+
+  // Beak & Comb
+  const beak = createLimb(1, 0.7, 1.2, 0xffa500);
+  beak.position.set(0, 5, -3.4);
+  chicken.add(beak);
+
+  const comb = createLimb(0.6, 1.2, 1.6, 0xff0000);
+  comb.position.set(0, 7.2, -2);
+  chicken.add(comb);
+
+  chicken.position.set(0, 0, -60);
+  scene.add(chicken);
+
+  /* =========================================================
+     EGGS IN THE NEST TO STEAL
+     ========================================================= */
+  const eggs = [];
+  const eggData = [
+    { type: 'Common', color: 0xffffff, val: 50, scale: 1, pos: [-4, -60] },
+    { type: 'Golden', color: 0xffd700, val: 200, scale: 1.2, pos: [4, -58] },
+    { type: 'Diamond', color: 0x00e5ff, val: 500, scale: 1.4, pos: [0, -64] }
+  ];
+
+  eggData.forEach((ed, idx) => {
+    const geo = new THREE.SphereGeometry(1.2 * ed.scale, 18, 18);
+    const mat = new THREE.MeshStandardMaterial({ 
+      color: ed.color,
+      roughness: 0.2, 
+      metalness: ed.type !== 'Common' ? 0.7 : 0.1 
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.scale.set(1, 1.35, 1);
+    mesh.position.set(ed.pos[0], 1.5 * ed.scale, ed.pos[1]);
+    mesh.castShadow = true;
+    scene.add(mesh);
+    eggs.push({ mesh, data: ed, initialPos: [...mesh.position.toArray()] });
+  });
+
+  /* =========================================================
+     GAME STATE & LOGIC
+     ========================================================= */
+  let bobux = 250;
+  let eggsStolenTotal = 0;
+  let playerSpeed = 16;
+  let jumpPower = 20;
+  let hasEgg = false;
+  let carriedEggType = null;
+  let chickenFrozen = false;
+
+  // Movement physics
+  let velocityY = 0;
+  const gravity = -50;
+  let isGrounded = true;
+
+  // Keyboard and Mouse inputs
+  const keys = {};
+  let cameraAngleHorizontal = Math.PI; // Look towards -Z
+  let cameraAngleVertical = 0.35;
+  const cameraDistance = 16;
+  let isRightMouseDown = false;
+
+  window.addEventListener('keydown', (e) => {
+    keys[e.code] = true;
+    if (e.code === 'KeyE') handleInteraction();
+  });
+  window.addEventListener('keyup', (e) => keys[e.code] = false);
+
+  window.addEventListener('mousedown', (e) => {
+    if (e.button === 2) isRightMouseDown = true; // Right mouse drag
+  });
+  window.addEventListener('mouseup', (e) => {
+    if (e.button === 2) isRightMouseDown = false;
+  });
+  window.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  window.addEventListener('mousemove', (e) => {
+    if (isRightMouseDown) {
+      cameraAngleHorizontal -= e.movementX * 0.005;
+      cameraAngleVertical += e.movementY * 0.005;
+      cameraAngleVertical = Math.max(0.1, Math.min(Math.PI / 2.2, cameraAngleVertical));
     }
+  });
 
-    // UPDATE GAME TITLE
-    function updateGameTitle() {
-      const input = document.getElementById('updateTitleInput');
-      if (input.value.trim() !== '') {
-        document.getElementById('featuredGameTitle').innerText = input.value;
-        alert('Top game successfully updated to: ' + input.value);
-        input.value = '';
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  /* =========================================================
+     INTERACTION & MECHANICS
+     ========================================================= */
+  const promptEl = document.getElementById('actionPrompt');
+  const alertEl = document.getElementById('alertBanner');
+
+  function handleInteraction() {
+    if (!hasEgg) {
+      // Check near an egg
+      for (let eggObj of eggs) {
+        if (!eggObj.mesh.visible) continue;
+        const d = avatar.position.distanceTo(eggObj.mesh.position);
+        if (d < 5) {
+          // Steal egg!
+          hasEgg = true;
+          carriedEggType = eggObj.data;
+          carriedEgg.material.color.setHex(eggObj.data.color);
+          carriedEgg.visible = true;
+          eggObj.mesh.visible = false;
+          break;
+        }
       }
     }
+  }
 
-    // ECONOMY ABUSE
-    function giveInfiniteBobux() {
-      bobux = 999999999;
-      document.getElementById('bobuxAmount').innerText = bobux.toLocaleString();
-      alert('⚡ ADMIN ABUSE: 999,999,999 BOBUX INJECTED!');
+  /* =========================================================
+     ADMIN ABUSE FUNCTIONS
+     ========================================================= */
+  function toggleAdmin() {
+    const p = document.getElementById('adminPanel');
+    p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  function adminGiveBobux() {
+    bobux += 1000000;
+    updateHUD();
+    alert('⚡ ADMIN: 1,000,000 BOBUX ADDED TO YOUR ROBLOX WALLET!');
+  }
+
+  function adminSuperSpeed() {
+    playerSpeed = 70;
+    updateHUD();
+    alert('⚡ ADMIN: GOD WALKSPEED SET TO 70!');
+  }
+
+  function adminSuperJump() {
+    jumpPower = 45;
+    alert('⚡ ADMIN: SUPER HIGH JUMP ACTIVATED!');
+  }
+
+  function adminSpawnGoldenEgg() {
+    const geo = new THREE.SphereGeometry(3, 18, 18);
+    const mat = new THREE.MeshStandardMaterial({ color: 0xff00ff, roughness: 0.1, metalness: 0.9 });
+    const mythicEgg = new THREE.Mesh(geo, mat);
+    mythicEgg.scale.set(1, 1.4, 1);
+    mythicEgg.position.set(0, 3, 0);
+    scene.add(mythicEgg);
+    eggs.push({
+      mesh: mythicEgg,
+      data: { type: 'MYTHIC VOID', color: 0xff00ff, val: 5000, scale: 2 },
+      initialPos: [0, 3, 0]
+    });
+    alert('✨ ADMIN: ULTRA MYTHIC VOID EGG SPAWNED IN ARENA MID!');
+  }
+
+  function adminFreezeChicken() {
+    chickenFrozen = !chickenFrozen;
+    alert(chickenFrozen ? '❄️ GUARDIAN CHICKENS ARE FROZEN!' : '🔥 GUARDIANS UNFREEZED!');
+  }
+
+  let discoTimer = null;
+  function adminRainbowDisco() {
+    if (discoTimer) {
+      clearInterval(discoTimer);
+      discoTimer = null;
+      baseplateMat.color.setHex(0x5a636a);
+      return;
+    }
+    discoTimer = setInterval(() => {
+      baseplateMat.color.setHex(Math.random() * 0xffffff);
+    }, 200);
+    alert('🌈 DISCO BASEPLATE STARTED!');
+  }
+
+  function updateHUD() {
+    document.getElementById('bobuxCount').innerText = bobux.toLocaleString();
+    document.getElementById('lbStats').innerText = `${eggsStolenTotal} | ${playerSpeed} spd`;
+    document.getElementById('speedDisplay').innerText = `🏃 Speed: ${playerSpeed} | Stolen: ${eggsStolenTotal}`;
+  }
+
+  /* =========================================================
+     MAIN GAME LOOP & ANIMATION
+     ========================================================= */
+  let clock = new THREE.Clock();
+  let walkCycle = 0;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const dt = Math.min(clock.getDelta(), 0.1);
+
+    // 1. WASD Movement in Camera Plane
+    const forward = new THREE.Vector3(-Math.sin(cameraAngleHorizontal), 0, -Math.cos(cameraAngleHorizontal)).normalize();
+    const right = new THREE.Vector3(-forward.z, 0, forward.x);
+    const moveDir = new THREE.Vector3();
+
+    if (keys['KeyW'] || keys['ArrowUp']) moveDir.add(forward);
+    if (keys['KeyS'] || keys['ArrowDown']) moveDir.sub(forward);
+    if (keys['KeyD'] || keys['ArrowRight']) moveDir.add(right);
+    if (keys['KeyA'] || keys['ArrowLeft']) moveDir.sub(right);
+
+    const isMoving = moveDir.lengthSq() > 0;
+    if (isMoving) {
+      moveDir.normalize();
+      avatar.position.addScaledVector(moveDir, playerSpeed * dt);
+      // Turn avatar in moving direction
+      avatar.rotation.y = Math.atan2(moveDir.x, moveDir.z);
+
+      // Roblox Limb Swing Animation
+      walkCycle += dt * (playerSpeed * 0.7);
+      leftArm.rotation.x = Math.sin(walkCycle) * 0.7;
+      rightArm.rotation.x = -Math.sin(walkCycle) * 0.7;
+      leftLeg.rotation.x = -Math.sin(walkCycle) * 0.7;
+      rightLeg.rotation.x = Math.sin(walkCycle) * 0.7;
+    } else {
+      leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, 0, 0.2);
+      rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, 0, 0.2);
+      leftLeg.rotation.x = THREE.MathUtils.lerp(leftLeg.rotation.x, 0, 0.2);
+      rightLeg.rotation.x = THREE.MathUtils.lerp(rightLeg.rotation.x, 0, 0.2);
     }
 
-    function resetBobux() {
-      bobux = 0;
-      document.getElementById('bobuxAmount').innerText = '0';
+    // 2. Jumping & Gravity Physics
+    if (keys['Space'] && isGrounded) {
+      velocityY = jumpPower;
+      isGrounded = false;
+    }
+    velocityY += gravity * dt;
+    avatar.position.y += velocityY * dt;
+    if (avatar.position.y <= 0) {
+      avatar.position.y = 0;
+      velocityY = 0;
+      isGrounded = true;
     }
 
-    // BROADCAST ALERT
-    function sendBroadcast() {
-      const text = document.getElementById('broadcastInput').value;
-      const bar = document.getElementById('systemBroadcast');
-      if (text.trim() !== '') {
-        bar.innerText = '⚠️ ' + text.toUpperCase();
-        bar.style.display = 'block';
-      }
+    // 3. Third-Person Roblox Camera Follow
+    const camOffset = new THREE.Vector3(
+      Math.sin(cameraAngleHorizontal) * Math.cos(cameraAngleVertical) * cameraDistance,
+      Math.sin(cameraAngleVertical) * cameraDistance + 3,
+      Math.cos(cameraAngleHorizontal) * Math.cos(cameraAngleVertical) * cameraDistance
+    );
+    camera.position.copy(avatar.position).add(camOffset);
+    camera.lookAt(avatar.position.x, avatar.position.y + 3, avatar.position.z);
+
+    // 4. Treadmill Training in Base (Stand on treadmill to gain Speed)
+    if (Math.abs(avatar.position.x - tmGroup.position.x) < 3 && Math.abs(avatar.position.z - tmGroup.position.z) < 4) {
+      playerSpeed += dt * 3; // level up walkspeed
+      updateHUD();
     }
 
-    // SCREEN EARTHQUAKE
-    function toggleEarthquake() {
-      earthquakeActive = !earthquakeActive;
-      if (earthquakeActive) {
-        document.body.classList.add('earthquake');
-      } else {
-        document.body.classList.remove('earthquake');
-      }
-    }
+    // 5. Check if Safe in Base
+    const inSafeZone = avatar.position.z > 50;
 
-    // DISCO FLASH
-    function toggleDisco() {
-      discoActive = !discoActive;
-      if (discoActive) {
-        document.body.classList.add('disco-active');
-      } else {
-        document.body.classList.remove('disco-active');
-      }
-    }
+    // 6. Delivering Stolen Egg to Nest in Base
+    if (hasEgg && inSafeZone && avatar.position.distanceTo(nestMesh.position) < 5) {
+      eggsStolenTotal++;
+      bobux += carriedEggType.val;
+      hasEgg = false;
+      carriedEgg.visible = false;
+      updateHUD();
 
-    // RAIN EGGS ABUSE
-    function rainEggs() {
-      for (let i = 0; i < 60; i++) {
+      // Respawn egg after 3 seconds
+      const eggRef = eggs.find(e => e.data.type === carriedEggType.type);
+      if (eggRef) {
         setTimeout(() => {
-          const egg = document.createElement('div');
-          egg.className = 'falling-egg';
-          egg.innerText = ['🥚', '🍳', '🐥', '💎'][Math.floor(Math.random() * 4)];
-          egg.style.left = Math.random() * 100 + 'vw';
-          document.body.appendChild(egg);
-          setTimeout(() => egg.remove(), 2000);
-        }, i * 30);
+          eggRef.mesh.visible = true;
+        }, 3000);
+      }
+      carriedEggType = null;
+    }
+
+    // 7. AI Guardian Chicken Logic
+    if (!chickenFrozen) {
+      const distToPlayer = chicken.position.distanceTo(avatar.position);
+      // Aggro if player has egg or is outside safe zone & close
+      const shouldChase = hasEgg || (!inSafeZone && distToPlayer < 45);
+
+      if (shouldChase && !inSafeZone) {
+        alertEl.style.display = 'block';
+        const chkDir = new THREE.Vector3().subVectors(avatar.position, chicken.position).normalize();
+        chkDir.y = 0;
+        chicken.position.addScaledVector(chkDir, 14 * dt);
+        chicken.rotation.y = Math.atan2(chkDir.x, chkDir.z);
+
+        // Caught by chicken! (Roblox Oof / Scrambled)
+        if (distToPlayer < 3.5) {
+          avatar.position.set(0, 0, 70); // respawn at base
+          if (hasEgg) {
+            hasEgg = false;
+            carriedEgg.visible = false;
+            const eggRef = eggs.find(e => e.data.type === carriedEggType.type);
+            if (eggRef) eggRef.mesh.visible = true;
+            carriedEggType = null;
+          }
+          alert('💥 OOF! THE GUARDIAN SCRAMBLED YOU! EGG DROPPED!');
+        }
+      } else {
+        alertEl.style.display = 'none';
+        // Roam back to wild nest
+        const nestTarget = new THREE.Vector3(0, 0, -60);
+        if (chicken.position.distanceTo(nestTarget) > 3) {
+          const retDir = new THREE.Vector3().subVectors(nestTarget, chicken.position).normalize();
+          chicken.position.addScaledVector(retDir, 6 * dt);
+          chicken.rotation.y = Math.atan2(retDir.x, retDir.z);
+        }
       }
     }
 
-    // BAN HAMMER
-    function fakeBan() {
-      document.getElementById('banScreen').style.display = 'flex';
-    }
-
-    function unbanSelf() {
-      document.getElementById('banScreen').style.display = 'none';
-      alert('You unbanned yourself using admin privileges!');
-    }
-
-    // --- MINI GAME: "STEEL AN EGG" ---
-    let canvas = document.getElementById('gameCanvas');
-    let ctx = canvas.getContext('2d');
-    let gameLoopId;
-    let score = 0;
-
-    const player = { x: 50, y: 180, size: 24, speed: 4 };
-    const guard = { x: 300, y: 100, size: 30, speedY: 3 };
-    const egg = { x: 580, y: 180, size: 20, stolen: false };
-    const keys = {};
-
-    window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-    window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-
-    function launchGame() {
-      document.getElementById('gameModal').style.display = 'flex';
-      score = 0;
-      egg.stolen = false;
-      document.getElementById('miniScore').innerText = 'Eggs Stolen: ' + score;
-      player.x = 50;
-      player.y = 180;
-      cancelAnimationFrame(gameLoopId);
-      gameLoop();
-    }
-
-    function closeGame() {
-      document.getElementById('gameModal').style.display = 'none';
-      cancelAnimationFrame(gameLoopId);
-    }
-
-    function gameLoop() {
-      // Logic
-      if ((keys['arrowup'] || keys['w']) && player.y > 0) player.y -= player.speed;
-      if ((keys['arrowdown'] || keys['s']) && player.y < canvas.height - player.size) player.y += player.speed;
-      if ((keys['arrowleft'] || keys['a']) && player.x > 0) player.x -= player.speed;
-      if ((keys['arrowright'] || keys['d']) && player.x < canvas.width - player.size) player.x += player.speed;
-
-      // Guard bounce
-      guard.y += guard.speedY;
-      if (guard.y < 30 || guard.y > canvas.height - 50) guard.speedY *= -1;
-
-      // Steal egg check
-      if (!egg.stolen && Math.hypot(player.x - egg.x, player.y - egg.y) < 30) {
-        egg.stolen = true;
+    // 8. Action Prompt indicator
+    let nearAnyEgg = false;
+    if (!hasEgg) {
+      for (let eggObj of eggs) {
+        if (eggObj.mesh.visible && avatar.position.distanceTo(eggObj.mesh.position) < 5) {
+          nearAnyEgg = true;
+          promptEl.innerText = `[E] STEAL ${eggObj.data.type.toUpperCase()} EGG!`;
+          promptEl.style.display = 'block';
+          break;
+        }
       }
-
-      // Return egg to base
-      if (egg.stolen && player.x < 60) {
-        score++;
-        egg.stolen = false;
-        bobux += 500;
-        document.getElementById('bobuxAmount').innerText = bobux.toLocaleString();
-        document.getElementById('miniScore').innerText = 'Eggs Stolen: ' + score + ' (+500 Bobux!)';
+    } else {
+      if (inSafeZone && avatar.position.distanceTo(nestMesh.position) < 8) {
+        promptEl.innerText = `DELIVERING EGG TO NEST...`;
+        promptEl.style.display = 'block';
+        nearAnyEgg = true;
       }
-
-      // Guard Catch
-      if (Math.hypot(player.x - guard.x, player.y - guard.y) < 30) {
-        player.x = 50;
-        player.y = 180;
-        egg.stolen = false;
-        alert('BUSTED BY THE EGG GUARD! You got scrambled!');
-      }
-
-      // Render
-      ctx.fillStyle = '#1e2124';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Safe Base
-      ctx.fillStyle = 'rgba(0, 176, 111, 0.2)';
-      ctx.fillRect(0, 0, 80, canvas.height);
-      ctx.fillStyle = '#00b06f';
-      ctx.font = '10px sans-serif';
-      ctx.fillText('ESCAPE ZONE', 10, 20);
-
-      // Draw Guard (Chicken Robot)
-      ctx.font = '26px sans-serif';
-      ctx.fillText('🤖', guard.x - 12, guard.y + 10);
-
-      // Draw Egg
-      if (!egg.stolen) {
-        ctx.font = '24px sans-serif';
-        ctx.fillText('🥚', egg.x, egg.y);
-      }
-
-      // Draw Player (Noob)
-      ctx.font = '24px sans-serif';
-      ctx.fillText(egg.stolen ? '🏃🥚' : '😎', player.x, player.y);
-
-      gameLoopId = requestAnimationFrame(gameLoop);
     }
-  </script>
+    if (!nearAnyEgg) promptEl.style.display = 'none';
+
+    renderer.render(scene, camera);
+  }
+
+  updateHUD();
+  animate();
+</script>
 </body>
 </html>
