@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bobux - Official Roblox Platform & Steel an Egg</title>
+<title>Bobux Ultimate Edition - Skinned Characters & Steel an Egg</title>
 <style>
   :root {
-    --rbx-bg: #191b1d;
-    --rbx-nav: #111214;
-    --rbx-card: #232527;
-    --rbx-card-hover: #32353b;
+    --rbx-dark: #111216;
+    --rbx-panel: #191b1f;
+    --rbx-card: #23252b;
+    --rbx-card-hover: #31343d;
     --rbx-green: #00b06f;
-    --rbx-green-hover: #00c87f;
+    --rbx-green-glow: #00e68a;
     --rbx-blue: #00a2ff;
-    --rbx-border: #2b2d31;
-    --rbx-text-sub: #999ea5;
     --rbx-gold: #f5b800;
+    --rbx-red: #ff334b;
+    --rbx-border: #2c2f38;
+    --rbx-text: #ffffff;
+    --rbx-subtext: #9fa4b0;
   }
 
   * {
@@ -23,25 +25,26 @@
     margin: 0;
     padding: 0;
     user-select: none;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
-  body {
-    background: var(--rbx-bg);
-    color: #fff;
-    min-height: 100vh;
-    overflow-x: hidden;
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--rbx-dark);
+    color: var(--rbx-text);
   }
 
-  /* ================= TOP NAVIGATION BAR ================= */
-  .navbar {
-    height: 52px;
-    background: var(--rbx-nav);
+  /* TOP ROBLOX NAVBAR */
+  .nav-header {
+    height: 54px;
+    background: var(--rbx-panel);
     border-bottom: 1px solid var(--rbx-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 20px;
     position: fixed;
     top: 0;
     left: 0;
@@ -52,94 +55,84 @@
   .nav-left, .nav-right {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
   }
 
-  .logo {
+  .brand-logo {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 20px;
+    gap: 10px;
+    font-size: 22px;
     font-weight: 900;
     cursor: pointer;
-    letter-spacing: -0.5px;
   }
 
-  .bobux-badge {
-    width: 22px;
-    height: 22px;
+  .bobux-cube {
+    width: 24px;
+    height: 24px;
     background: var(--rbx-gold);
-    border-radius: 4px;
+    border-radius: 5px;
     transform: rotate(15deg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 900;
     color: #000;
-    font-size: 13px;
-  }
-
-  .nav-tabs button {
-    background: none;
-    border: none;
-    color: #fff;
     font-size: 14px;
-    font-weight: 600;
-    padding: 8px 12px;
+    font-weight: 900;
+    box-shadow: 0 0 12px rgba(245, 184, 0, 0.6);
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--rbx-text);
+    padding: 8px 14px;
     border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.15s;
   }
 
-  .nav-tabs button:hover, .nav-tabs button.active {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .search-input {
-    background: #232527;
-    border: 1px solid var(--rbx-border);
-    border-radius: 8px;
-    padding: 6px 14px;
-    color: #fff;
-    width: 220px;
-    outline: none;
-    font-size: 13px;
+  .nav-btn:hover, .nav-btn.active {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .currency-pill {
-    background: #232527;
-    padding: 5px 12px;
-    border-radius: 16px;
+    background: var(--rbx-card);
+    border: 1px solid var(--rbx-border);
+    padding: 6px 14px;
+    border-radius: 18px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     display: flex;
     align-items: center;
-    gap: 6px;
-    border: 1px solid var(--rbx-border);
+    gap: 8px;
+    color: var(--rbx-gold);
   }
 
-  .admin-abuse-btn {
-    background: linear-gradient(135deg, #7a1cd8, #ff0080);
+  .admin-badge-btn {
+    background: linear-gradient(135deg, #7a1cd8, #ff007b);
     color: #fff;
     border: none;
-    padding: 6px 14px;
+    padding: 7px 16px;
     border-radius: 6px;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 900;
     cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 0, 123, 0.4);
   }
 
-  /* ================= LAYOUT & SIDEBAR ================= */
-  .app-layout {
+  /* LAYOUT */
+  .portal-body {
     display: flex;
-    margin-top: 52px;
+    margin-top: 54px;
+    height: calc(100vh - 54px);
   }
 
   .sidebar {
-    width: 200px;
-    background: #18191c;
-    height: calc(100vh - 52px);
-    position: fixed;
+    width: 210px;
+    background: #14161a;
     border-right: 1px solid var(--rbx-border);
     padding: 16px 10px;
     display: flex;
@@ -147,57 +140,50 @@
     gap: 4px;
   }
 
-  .sidebar button {
+  .sidebar-link {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 14px;
-    color: var(--rbx-text-sub);
-    background: none;
+    padding: 11px 16px;
+    color: var(--rbx-subtext);
+    background: transparent;
     border: none;
-    width: 100%;
-    font-size: 14px;
-    font-weight: 600;
     border-radius: 8px;
-    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
     text-align: left;
+    cursor: pointer;
     transition: 0.15s;
   }
 
-  .sidebar button:hover, .sidebar button.active {
+  .sidebar-link:hover, .sidebar-link.active {
     background: var(--rbx-card);
     color: #fff;
   }
 
-  .main-viewport {
-    margin-left: 200px;
+  .content-area {
+    flex: 1;
+    overflow-y: auto;
     padding: 24px 36px;
-    width: calc(100% - 200px);
-    min-height: calc(100vh - 52px);
   }
 
-  /* ================= PAGES: GAMES HUB ================= */
-  .page-view {
-    display: none;
-  }
-  .page-view.active {
-    display: block;
-  }
+  .view-panel { display: none; }
+  .view-panel.active { display: block; }
 
-  /* FEATURED TOP GAME */
-  .featured-banner {
-    background: linear-gradient(135deg, #1f2b38 0%, #15102a 100%);
-    border-radius: 16px;
+  /* FEATURED TOP BANNER */
+  .featured-showcase {
+    background: linear-gradient(135deg, #182232 0%, #171128 100%);
+    border-radius: 18px;
     overflow: hidden;
     display: flex;
-    border: 1px solid #3b3f49;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid #343c4c;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     margin-bottom: 32px;
   }
 
-  .featured-poster {
-    width: 55%;
-    min-height: 280px;
+  .showcase-poster {
+    width: 50%;
+    min-height: 290px;
     background: url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?auto=format&fit=crop&w=1200&q=80') center/cover;
     position: relative;
     display: flex;
@@ -205,78 +191,76 @@
     justify-content: center;
   }
 
-  .egg-float {
-    font-size: 80px;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
-    animation: eggBob 2s ease-in-out infinite;
-  }
-  @keyframes eggBob {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-15px) rotate(5deg); }
+  .egg-hero-icon {
+    font-size: 85px;
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
+    animation: eggFloatAnim 2.5s ease-in-out infinite;
   }
 
-  .featured-info {
-    padding: 30px;
-    width: 45%;
+  @keyframes eggFloatAnim {
+    0%, 100% { transform: translateY(0) rotate(-6deg); }
+    50% { transform: translateY(-16px) rotate(6deg); }
+  }
+
+  .showcase-details {
+    width: 50%;
+    padding: 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
 
-  .play-green-btn {
+  .play-hero-btn {
     background: var(--rbx-green);
-    color: white;
+    color: #fff;
     border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 800;
+    padding: 14px 34px;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 900;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     width: fit-content;
-    box-shadow: 0 4px 15px rgba(0, 176, 111, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 176, 111, 0.5);
     transition: 0.2s;
   }
-  .play-green-btn:hover {
-    background: var(--rbx-green-hover);
+
+  .play-hero-btn:hover {
+    background: var(--rbx-green-glow);
     transform: translateY(-2px);
   }
 
-  /* GRID CARDS FOR 4 MORE GAMES */
-  .section-heading {
-    font-size: 20px;
+  /* GAMES MATRIX */
+  .section-title {
+    font-size: 21px;
     font-weight: 800;
     margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 
-  .games-grid {
+  .games-matrix {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
     gap: 16px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
-  .game-card {
+  .game-tile {
     background: var(--rbx-card);
     border-radius: 10px;
+    border: 1px solid var(--rbx-border);
     overflow: hidden;
     cursor: pointer;
     transition: 0.2s;
-    border: 1px solid var(--rbx-border);
   }
 
-  .game-card:hover {
+  .game-tile:hover {
     background: var(--rbx-card-hover);
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   }
 
-  .card-thumbnail {
+  .tile-art {
     width: 100%;
     aspect-ratio: 1/1;
     display: flex;
@@ -285,92 +269,59 @@
     font-size: 50px;
   }
 
-  .card-body {
-    padding: 10px 12px;
-  }
+  .tile-content { padding: 10px 12px; }
+  .tile-name { font-size: 14px; font-weight: 800; }
+  .tile-meta { font-size: 11px; color: var(--rbx-subtext); margin-top: 4px; }
 
-  .card-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  /* AVATAR WORKSHOP */
+  .avatar-stage { display: flex; gap: 28px; }
 
-  .card-stats {
-    font-size: 11px;
-    color: var(--rbx-text-sub);
-  }
-
-  /* ================= AVATAR CUSTOMIZER PAGE ================= */
-  .avatar-shop-container {
-    display: flex;
-    gap: 24px;
-  }
-
-  .avatar-preview-box {
+  .wardrobe-display {
     width: 320px;
-    height: 420px;
-    background: #151619;
-    border-radius: 12px;
+    height: 440px;
+    background: #14161b;
+    border-radius: 14px;
     border: 2px solid var(--rbx-border);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
-    padding: 20px;
+    padding: 24px;
+    text-align: center;
   }
 
-  .avatar-model-preview {
-    font-size: 100px;
-    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.8));
-    margin-bottom: 20px;
-  }
-
-  .skins-selector-box {
+  .wardrobe-options {
     flex: 1;
     background: var(--rbx-card);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 24px;
     border: 1px solid var(--rbx-border);
   }
 
-  .skins-grid {
+  .items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 14px;
-    margin-top: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 14px 0 24px 0;
   }
 
-  .skin-item {
-    background: #191b1d;
+  .item-card {
+    background: #18191f;
     border: 2px solid var(--rbx-border);
     border-radius: 8px;
-    padding: 14px 10px;
+    padding: 14px 8px;
     text-align: center;
     cursor: pointer;
     transition: 0.15s;
   }
 
-  .skin-item:hover, .skin-item.selected {
+  .item-card:hover, .item-card.equipped {
     border-color: var(--rbx-green);
-    background: #25282c;
+    background: #252831;
   }
 
-  .skin-item .skin-icon {
-    font-size: 40px;
-    margin-bottom: 8px;
-  }
-
-  .skin-item .skin-name {
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  /* ================= 3D GAME RUNNER MODAL ================= */
-  .game-3d-screen {
+  /* 3D FULLSCREEN CONTAINER */
+  .game-3d-fullscreen {
     position: fixed;
     inset: 0;
     background: #000;
@@ -378,19 +329,17 @@
     display: none;
   }
 
-  #webgl-canvas-box {
-    width: 100%;
-    height: 100%;
-  }
+  #three-viewport { width: 100%; height: 100%; }
 
-  .game-overlay-topbar {
+  /* IN-GAME HUD */
+  .ingame-topbar {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 46px;
-    background: rgba(18, 19, 21, 0.85);
-    backdrop-filter: blur(8px);
+    height: 48px;
+    background: rgba(18, 19, 23, 0.88);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -399,540 +348,754 @@
     border-bottom: 1px solid rgba(255,255,255,0.1);
   }
 
-  .exit-game-btn {
-    background: #e91e63;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
-  .night-alert-banner {
+  .night-alert-strip {
     position: absolute;
-    top: 56px;
+    top: 58px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(90deg, #b71c1c, #4a148c);
-    padding: 8px 24px;
+    background: linear-gradient(90deg, #d90429, #7b2cbf, #d90429);
+    padding: 10px 28px;
     color: #fff;
     font-weight: 900;
-    border-radius: 20px;
-    font-size: 14px;
+    border-radius: 30px;
+    font-size: 15px;
     display: none;
-    z-index: 100;
+    z-index: 120;
+    box-shadow: 0 0 25px rgba(217, 4, 41, 0.8);
     border: 2px solid #ffd700;
   }
 
-  .action-hud {
+  .hud-stats-card {
     position: absolute;
-    bottom: 20px;
+    bottom: 80px;
     right: 20px;
-    background: rgba(0,0,0,0.8);
-    border: 2px solid #00e5ff;
-    padding: 10px 18px;
-    border-radius: 10px;
-    color: #00e5ff;
+    background: rgba(10, 12, 16, 0.85);
+    border: 2px solid #00f0ff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: #00f0ff;
     font-weight: 800;
+    font-size: 15px;
     text-align: right;
   }
 
-  .controls-hud {
+  .emotes-hud {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    background: rgba(0,0,0,0.7);
-    padding: 10px 14px;
-    border-radius: 8px;
+    background: rgba(10, 10, 14, 0.75);
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
     font-size: 12px;
-    color: #ccc;
-    line-height: 1.5;
+    color: #ddd;
+    line-height: 1.6;
+  }
+
+  /* CHARACTER QUICK-SWITCH BAR */
+  .character-switcher {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    background: rgba(10, 10, 14, 0.8);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    z-index: 110;
+  }
+
+  .char-chip {
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.15s;
+  }
+
+  .char-chip:hover, .char-chip.active {
+    border-color: #00b06f;
+    background: rgba(0, 176, 111, 0.25);
+    color: #fff;
   }
 
   /* ADMIN PANEL */
-  .admin-panel {
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    width: 320px;
-    background: #18191c;
-    border: 2px solid #ff0080;
-    border-radius: 10px;
-    z-index: 3000;
+  .admin-panel-float {
+    position: absolute;
+    top: 56px;
+    right: 16px;
+    width: 340px;
+    background: #16181d;
+    border: 2px solid #ff007b;
+    border-radius: 12px;
+    z-index: 2200;
     display: none;
     flex-direction: column;
     padding: 14px;
     gap: 8px;
   }
 
-  .admin-panel button {
-    background: #23252a;
-    border: 1px solid #444;
+  .abuse-btn {
+    background: #22242c;
+    border: 1px solid #3a3e48;
     color: #fff;
-    padding: 8px;
-    font-weight: bold;
+    padding: 9px 12px;
     border-radius: 6px;
+    font-size: 12px;
+    font-weight: 800;
     cursor: pointer;
+    text-align: left;
   }
-  .admin-panel button:hover {
-    background: #ff0080;
+  .abuse-btn:hover { background: #ff007b; }
+
+  /* MODEL LOADING OVERLAY */
+  .model-loading-pill {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    background: rgba(0,0,0,0.8);
+    border: 1px solid #00e5ff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #00e5ff;
+    display: none;
   }
 </style>
+
+<!-- Three.js + GLTFLoader CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
 
-  <!-- ================= TOP ROBLOX NAVBAR ================= -->
-  <header class="navbar">
+  <!-- ================= ROBLOX PORTAL ================= -->
+  <header class="nav-header">
     <div class="nav-left">
-      <div class="logo" onclick="switchTab('discover')">
-        <div class="bobux-badge">B</div>
+      <div class="brand-logo" onclick="switchView('discover')">
+        <div class="bobux-cube">B</div>
         Bobux
       </div>
-      <nav class="nav-tabs">
-        <button id="tab-discover" class="active" onclick="switchTab('discover')">Discover</button>
-        <button id="tab-avatar" onclick="switchTab('avatar')">Avatar Shop</button>
-        <button onclick="alert('Bobux Studio Editor v2.4 Ready!')">Create</button>
-      </nav>
-      <input type="text" class="search-input" placeholder="Search experiences, eggs, skins...">
+      <button class="nav-btn active" id="btn-discover" onclick="switchView('discover')">Discover</button>
+      <button class="nav-btn" id="btn-avatar" onclick="switchView('avatar')">Avatar Workshop</button>
+      <button class="nav-btn" onclick="alert('⚡ Bobux Studio 3.0: Ready!')">Create</button>
     </div>
 
     <div class="nav-right">
       <div class="currency-pill">
         <span>⬡</span>
-        <span id="navBobux">10,500</span> Bobux
+        <span id="navCurrency">18,500</span> Bobux
       </div>
-      <button class="admin-abuse-btn" onclick="toggleAdmin()">⚡ Admin Abuse</button>
-      <div id="navAvatarIcon" style="font-size:22px; cursor:pointer;" onclick="switchTab('avatar')">😎</div>
+      <button class="admin-badge-btn" onclick="toggleAdminPanel()">⚡ Admin Abuse</button>
+      <div id="navUserIcon" style="font-size:24px; cursor:pointer;" onclick="switchView('avatar')">🤖</div>
     </div>
   </header>
 
-  <!-- ================= APP LAYOUT ================= -->
-  <div class="app-layout">
-    <!-- SIDEBAR -->
+  <div class="portal-body">
     <aside class="sidebar">
-      <button class="active" onclick="switchTab('discover')">🏠 Home</button>
-      <button onclick="switchTab('discover')">🎮 Discover</button>
-      <button onclick="switchTab('avatar')">👕 Avatar (کریکٹر)</button>
-      <button onclick="alert('No new messages!')">💬 Messages</button>
-      <button onclick="alert('Friends: Guest666, MegaNoob99')">👥 Friends</button>
-      <button onclick="alert('Trade Center Active')">🔄 Trade</button>
+      <button class="sidebar-link active" onclick="switchView('discover')">🏠 Home</button>
+      <button class="sidebar-link" onclick="switchView('discover')">🎮 Discover</button>
+      <button class="sidebar-link" onclick="switchView('avatar')">👕 Avatar (کریکٹر)</button>
+      <button class="sidebar-link" onclick="alert('Trading Hub Active')">🔄 Trade Center</button>
+      <button class="sidebar-link" onclick="alert('Friends: Guest666, ProRobot, SoldierX')">👥 Friends (6 Online)</button>
     </aside>
 
-    <!-- MAIN VIEWPORT -->
-    <main class="main-viewport">
-
-      <!-- ================= PAGE 1: GAMES DISCOVERY ================= -->
-      <div id="page-discover" class="page-view active">
-        
-        <!-- TOP FEATURED: STEEL AN EGG -->
-        <div class="featured-banner">
-          <div class="featured-poster">
-            <div class="egg-float">🥚</div>
+    <main class="content-area">
+      <!-- DISCOVER HUB -->
+      <div class="view-panel active" id="view-discover">
+        <!-- TOP GAME: STEEL AN EGG -->
+        <div class="featured-showcase">
+          <div class="showcase-poster">
+            <div class="egg-hero-icon">🥚</div>
           </div>
-          <div class="featured-info">
-            <span style="color:#e91e63; font-weight:800; font-size:12px; letter-spacing:1px; margin-bottom:6px;">🔥 #1 TOP RATED GAME</span>
-            <h1 style="font-size:32px; font-weight:900; margin-bottom:8px;">Steel an egg</h1>
-            <p style="color:var(--rbx-text-sub); font-size:13px; margin-bottom:18px;">
-              بیس میں ٹریڈمل پر بھاگ کر سپیڈ بڑھائیں، گارڈینز سے بچ کر نایاب Divine اور Secret انڈے چوری کریں، اور رات کے وقت 30X سپیڈ ملٹی پلائر حاصل کریں!
+          <div class="showcase-details">
+            <span style="color:var(--rbx-red); font-size:12px; font-weight:900; margin-bottom:8px;">🔥 #1 TOP RATED WITH 3D ANIMATED CHARACTERS</span>
+            <h1 style="font-size:32px; font-weight:900; margin-bottom:8px;">Steel an egg: Animated Edition</h1>
+            <p style="color:var(--rbx-subtext); font-size:13px; line-height:1.5; margin-bottom:18px;">
+              اب Three.js کے اصلی اینیمیٹڈ کریکٹرز (Expressive Robot، Soldier، X-Bot اور کلاسک روبلوکس نوب) کے ساتھ کھیلیں! بیس ٹریڈمل پر سپیڈ بڑھائیں، اور ہر 5 منٹ بعد رات کو 30X سپیڈ حاصل کریں۔
             </p>
-            <div style="display:flex; gap:16px; margin-bottom:20px; font-size:13px; color:var(--rbx-text-sub);">
-              <span>👍 99% Likes</span>
-              <span>👥 240.5K Playing</span>
-              <span>🌙 30X Night Ready</span>
+            <div style="display:flex; gap:16px; font-size:13px; color:var(--rbx-subtext); margin-bottom:22px;">
+              <span>👍 99% (1.2M Likes)</span>
+              <span>👥 410.8K Active</span>
+              <span>🤖 Skinned Meshes</span>
             </div>
-            <button class="play-green-btn" onclick="start3DGame()">
-              <span>▶</span> Play "Steel an egg"
+            <button class="play-hero-btn" onclick="launch3DExperience()">
+              <span>▶</span> Play Experience
             </button>
           </div>
         </div>
 
-        <!-- 4 MORE ROBLOX EXPERIENCES -->
-        <div class="section-heading">
-          <span>Popular Experiences (مزید کھیلیں)</span>
-        </div>
-
-        <div class="games-grid">
-          <!-- Game 1: Tower of Bobux Obby -->
-          <div class="game-card" onclick="launchMiniGame('Tower of Bobux Obby', '🏃', 'پارکور کی رکاوٹیں پار کریں اور ٹاور کے اوپر پہنچیں!')">
-            <div class="card-thumbnail" style="background:#4a148c;">🧗</div>
-            <div class="card-body">
-              <div class="card-title">Tower of Bobux (Mega Obby)</div>
-              <div class="card-stats">👍 96% • 👥 48.2K Playing</div>
+        <div class="section-title">Popular Experiences (مزید کھیلیں)</div>
+        <div class="games-matrix">
+          <div class="game-tile" onclick="alert('Launching Tower of Bobux Obby...')">
+            <div class="tile-art" style="background:#5e17eb;">🧗‍♂️</div>
+            <div class="tile-content">
+              <div class="tile-name">Tower of Bobux (Obby)</div>
+              <div class="tile-meta">👍 97% • 👥 54.1K Playing</div>
             </div>
           </div>
 
-          <!-- Game 2: Natural Disaster Survival -->
-          <div class="game-card" onclick="launchMiniGame('Natural Disaster Survival', '🌪️', 'طوفان، زلزلے اور میٹیور شاور سے بچیں!')">
-            <div class="card-thumbnail" style="background:#bf360c;">🌋</div>
-            <div class="card-body">
-              <div class="card-title">Natural Disaster Bobux</div>
-              <div class="card-stats">👍 93% • 👥 89.1K Playing</div>
+          <div class="game-tile" onclick="alert('Launching Natural Disaster Survival...')">
+            <div class="tile-art" style="background:#b7094c;">🌋</div>
+            <div class="tile-content">
+              <div class="tile-name">Natural Disaster Bobux</div>
+              <div class="tile-meta">👍 94% • 👥 98.6K Playing</div>
             </div>
           </div>
 
-          <!-- Game 3: Brookhaven RP -->
-          <div class="game-card" onclick="launchMiniGame('Brookhaven Bobux RP', '🚗', 'اپنا گھر خریدیں، لگژری کاریں ڈرائیو کریں اور دوست بنائیں!')">
-            <div class="card-thumbnail" style="background:#004d40;">🏡</div>
-            <div class="card-body">
-              <div class="card-title">Brookhaven Bobux RP</div>
-              <div class="card-stats">👍 91% • 👥 125.4K Playing</div>
+          <div class="game-tile" onclick="alert('Launching Brookhaven Bobux RP...')">
+            <div class="tile-art" style="background:#0077b6;">🏙️</div>
+            <div class="tile-content">
+              <div class="tile-name">Brookhaven Bobux RP</div>
+              <div class="tile-meta">👍 92% • 👥 180.2K Playing</div>
             </div>
           </div>
 
-          <!-- Game 4: Blox Fruits Sword Arena -->
-          <div class="game-card" onclick="launchMiniGame('Blox Fruits Sword Arena', '⚔️', 'جادوئی تلواریں حاصل کریں اور دیگر پلیئرز سے مقابلہ کریں!')">
-            <div class="card-thumbnail" style="background:#1a237e;">⚔️</div>
-            <div class="card-body">
-              <div class="card-title">Blox Fruits: Sword Arena</div>
-              <div class="card-stats">👍 95% • 👥 110.8K Playing</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ================= PAGE 2: AVATAR CUSTOMIZER ================= -->
-      <div id="page-avatar" class="page-view">
-        <h2 style="font-size:24px; font-weight:800; margin-bottom:6px;">Avatar Shop (کریکٹر کسٹمائزر)</h2>
-        <p style="color:var(--rbx-text-sub); margin-bottom:20px; font-size:13px;">یہاں سے اپنی پسند کا کریکٹر منتخب کریں، وہی کریکٹر گیم کے اندر ظاہر ہوگا!</p>
-
-        <div class="avatar-shop-container">
-          <!-- Preview Box -->
-          <div class="avatar-preview-box">
-            <div class="avatar-model-preview" id="avatarPreviewIcon">😎</div>
-            <h3 id="currentSkinTitle" style="font-size:18px; font-weight:800;">Classic Noob</h3>
-            <span style="color:#00ff88; font-size:12px; font-weight:bold; margin-top:4px;">✓ EQUIPPED IN 3D WORLD</span>
-          </div>
-
-          <!-- Skin Selection -->
-          <div class="skins-selector-box">
-            <h3 style="font-size:16px; margin-bottom:12px;">مفت کھالیں اور کریکٹرز (Select Character Skin)</h3>
-            
-            <div class="skins-grid">
-              <div class="skin-item selected" onclick="applySkin('noob', '😎', 'Classic Noob', 0xf5cd2f, 0x0d69ac, 0x5a9a32, this)">
-                <div class="skin-icon">😎</div>
-                <div class="skin-name">Classic Noob</div>
-              </div>
-
-              <div class="skin-item" onclick="applySkin('bacon', '🧑‍🦱', 'Bacon Hair', 0xffd1b3, 0xa52a2a, 0x1f2937, this)">
-                <div class="skin-icon">🧑‍🦱</div>
-                <div class="skin-name">Bacon Hair</div>
-              </div>
-
-              <div class="skin-item" onclick="applySkin('guest', '😈', 'Guest 666', 0x222222, 0xd80000, 0x111111, this)">
-                <div class="skin-icon">😈</div>
-                <div class="skin-name">Guest 666</div>
-              </div>
-
-              <div class="skin-item" onclick="applySkin('hacker', '🤖', 'Pro Hacker', 0x00ff00, 0x111111, 0x00ff00, this)">
-                <div class="skin-icon">🤖</div>
-                <div class="skin-name">Pro Hacker</div>
-              </div>
-
-              <div class="skin-item" onclick="applySkin('golden', '👑', 'Golden King', 0xffd700, 0xffbb00, 0xcca000, this)">
-                <div class="skin-icon">👑</div>
-                <div class="skin-name">Golden King</div>
-              </div>
-            </div>
-
-            <div style="margin-top:24px;">
-              <button class="play-green-btn" onclick="start3DGame()">✓ یہ کریکٹر لے کر "Steel an Egg" کھیلیں</button>
+          <div class="game-tile" onclick="alert('Launching Blox Fruits: Blade Arena...')">
+            <div class="tile-art" style="background:#005f73;">⚔️</div>
+            <div class="tile-content">
+              <div class="tile-name">Blox Fruits: Blade Arena</div>
+              <div class="tile-meta">👍 95% • 👥 134.7K Playing</div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- AVATAR WORKSHOP -->
+      <div class="view-panel" id="view-avatar">
+        <h2 style="font-size:24px; font-weight:800; margin-bottom:6px;">Avatar Workshop (کریکٹرز کا انتخاب)</h2>
+        <p style="color:var(--rbx-subtext); font-size:13px; margin-bottom:22px;">Three.js اینیمیٹڈ ماڈلز یا کلاسک روبلوکس سکنز منتخب کریں:</p>
+
+        <div class="avatar-stage">
+          <div class="wardrobe-display">
+            <div style="font-size:100px; margin-bottom:14px;" id="wardrobeIcon">🤖</div>
+            <h3 id="wardrobeCharTitle" style="font-size:20px; font-weight:800;">RobotExpressive</h3>
+            <p style="font-size:12px; color:var(--rbx-green); margin-top:4px;" id="wardrobeTypeLabel">Three.js Morph Skinned Mesh</p>
+          </div>
+
+          <div class="wardrobe-options">
+            <h4 style="font-size:15px; margin-bottom:10px;">Three.js Skinned & Morph Characters:</h4>
+            <div class="items-grid">
+              <div class="item-card equipped" onclick="selectCharacter('robot', '🤖', 'RobotExpressive', 'Three.js Morph Skinned Mesh', this)">
+                <div style="font-size:36px; margin-bottom:6px;">🤖</div>
+                <div style="font-size:12px; font-weight:bold;">RobotExpressive</div>
+              </div>
+
+              <div class="item-card" onclick="selectCharacter('soldier', '🪖', 'Soldier', 'Three.js Animation Blending', this)">
+                <div style="font-size:36px; margin-bottom:6px;">🪖</div>
+                <div style="font-size:12px; font-weight:bold;">Elite Soldier</div>
+              </div>
+
+              <div class="item-card" onclick="selectCharacter('xbot', '🦾', 'X-Bot', 'Three.js Walking Skeleton', this)">
+                <div style="font-size:36px; margin-bottom:6px;">🦾</div>
+                <div style="font-size:12px; font-weight:bold;">X-Bot Android</div>
+              </div>
+            </div>
+
+            <h4 style="font-size:15px; margin-bottom:10px;">Classic Roblox Blocky Characters:</h4>
+            <div class="items-grid">
+              <div class="item-card" onclick="selectCharacter('noob', '😎', 'Classic Noob', 'Roblox Blocky Avatar', this)">
+                <div style="font-size:36px; margin-bottom:6px;">😎</div>
+                <div style="font-size:12px; font-weight:bold;">Classic Noob</div>
+              </div>
+
+              <div class="item-card" onclick="selectCharacter('guest', '😈', 'Guest 666', 'Roblox Blocky Demon', this)">
+                <div style="font-size:36px; margin-bottom:6px;">😈</div>
+                <div style="font-size:12px; font-weight:bold;">Guest 666</div>
+              </div>
+
+              <div class="item-card" onclick="selectCharacter('king', '👑', 'Golden King', 'Roblox Gold Edition', this)">
+                <div style="font-size:36px; margin-bottom:6px;">👑</div>
+                <div style="font-size:12px; font-weight:bold;">Golden King</div>
+              </div>
+            </div>
+
+            <button class="play-hero-btn" onclick="launch3DExperience()">✓ Save & Play with This Character</button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
-  <!-- ================= 3D STEEL AN EGG FULL VIEW ================= -->
-  <div class="game-3d-screen" id="game3dScreen">
-    <div class="game-overlay-topbar">
-      <span style="font-weight:bold; font-size:14px;">🎮 Playing: Steel an Egg (Roblox 3D Engine)</span>
+  <!-- ================= 3D FULLSCREEN ENVIRONMENT ================= -->
+  <div class="game-3d-fullscreen" id="game3dWrapper">
+    <div class="ingame-topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button style="background:#222; border:1px solid #444; color:#fff; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="exit3D()">✕ Exit</button>
+        <span style="font-weight:bold; font-size:13px;">🎮 Steel an egg: Enhanced 3D</span>
+      </div>
+
       <div style="display:flex; align-items:center; gap:16px;">
-        <span style="color:#ffd700; font-weight:800;" id="game3dBobux">⬡ 10,500</span>
-        <button class="admin-abuse-btn" onclick="toggleAdmin()">⚡ Admin</button>
-        <button class="exit-game-btn" onclick="exit3DGame()">✕ Exit Game</button>
+        <div style="color:var(--rbx-gold); font-weight:800; font-size:13px;" id="gameBobuxDisplay">⬡ 18,500</div>
+        <div style="background:rgba(255,255,255,0.08); padding:4px 12px; border-radius:12px; font-size:12px;" id="nightClockHud">🌙 نائٹ: 05:00</div>
+        <button class="admin-badge-btn" onclick="toggleAdminPanel()">⚡ Admin</button>
       </div>
     </div>
 
-    <div class="night-alert-banner" id="gameNightBanner">
-      🌙 رات شروع ہو چکی ہے! 30X SPEED MULTIPLIER ACTIVE! ٹریڈمل پر جائیں!
+    <!-- 30X NIGHT BANNER -->
+    <div class="night-alert-strip" id="nightEventBanner">
+      🚨 رات شروع ہو چکی ہے! 30X SPEED MULTIPLIER ACTIVE! ٹریڈمل پر بھاگو!
     </div>
 
-    <div class="controls-hud">
-      <strong>کنٹرولز:</strong><br>
-      • <b>WASD</b>: چلنا / دوڑنا<br>
-      • <b>SPACE</b>: جمپ (Jump)<br>
-      • <b>Right Mouse Drag</b>: کیمرہ گھمائیں<br>
-      • <b>E</b>: انڈا چوری کریں<br>
-      • <b>ٹریڈمل</b>: بیس کے اندر ٹریڈمل پر جائیں!
-    </div>
+    <div class="model-loading-pill" id="modelLoadPill">⏳ Loading 3D Skinned Model...</div>
 
-    <div class="action-hud" id="gameActionHud">
+    <!-- HUD STATS -->
+    <div class="hud-stats-card" id="speedGauge">
       🏃 سپیڈ: 16<br>
-      <span style="font-size:12px; color:#ffeb3b;" id="gameMultText">⚡ ملٹی پلائر: 1X</span>
+      <span style="font-size:12px; color:#ffd700;" id="multiplierHud">⚡ ملٹی پلائر: 1X</span>
     </div>
 
-    <div id="webgl-canvas-box"></div>
+    <!-- EMOTES & CONTROLS HELPER -->
+    <div class="emotes-hud">
+      <strong>کنٹرولز:</strong><br>
+      • <b>WASD</b>: دوڑنا / چلنا | <b>Space</b>: جمپ<br>
+      • <b>Right Mouse Drag</b>: کیمرہ گھمائیں<br>
+      • <b>E</b>: انڈا چوری کریں | <b>F</b>: فلائی موڈ<br>
+      • <b>B</b>: ڈانس | <b>G</b>: ویو (Wave) | <b>H</b>: پنچ (Punch)
+    </div>
+
+    <!-- QUICK CHARACTER SWITCHER IN-GAME -->
+    <div class="character-switcher">
+      <div class="char-chip active" id="chip-robot" onclick="switchInGameChar('robot')">🤖 RobotExpressive</div>
+      <div class="char-chip" id="chip-soldier" onclick="switchInGameChar('soldier')">🪖 Soldier</div>
+      <div class="char-chip" id="chip-xbot" onclick="switchInGameChar('xbot')">🦾 X-Bot</div>
+      <div class="char-chip" id="chip-noob" onclick="switchInGameChar('noob')">🧱 Classic Noob</div>
+    </div>
+
+    <div id="three-viewport"></div>
   </div>
 
-  <!-- ADMIN PANEL -->
-  <div class="admin-panel" id="adminPanel">
-    <div style="font-weight:900; color:#ff0080; font-size:13px; display:flex; justify-content:space-between;">
-      <span>⚡ BOBUX ADMIN ABUSE</span>
-      <span style="cursor:pointer;" onclick="toggleAdmin()">✕</span>
+  <!-- ADMIN ABUSE CONSOLE -->
+  <div class="admin-panel-float" id="adminPanelFloat">
+    <div style="font-weight:900; color:#ff007b; font-size:13px; display:flex; justify-content:space-between; margin-bottom:8px;">
+      <span>⚡ BOBUX ADMIN ABUSE ULTIMATE</span>
+      <span style="cursor:pointer;" onclick="toggleAdminPanel()">✕</span>
     </div>
-    <button onclick="forceNightToggle()">🌙 رات آن/آف کریں (فوری 30X)</button>
-    <button onclick="addBobux(1000000)">💰 +1,000,000 Free Bobux</button>
-    <button onclick="boostSpeed(120)">⚡ Super God Speed (120 spd)</button>
-    <button onclick="spawnDivineCluster()">✨ تمام ڈیوائن اور سیکرٹ ایگز سپون کریں</button>
+    <button class="abuse-btn" onclick="abuseInstantNight()">🌙 فوری رات آن/آف کریں (Instant 30X Night)</button>
+    <button class="abuse-btn" onclick="abuseAddBobux(10000000)">💰 +10,000,000 Free Bobux</button>
+    <button class="abuse-btn" onclick="abuseToggleFly()">🕊️ فلائی موڈ آن/آف کریں (Fly [F])</button>
+    <button class="abuse-btn" onclick="abuseSpawnDivineWave()">✨ 4x ڈیوائن اور سیکرٹ ایگز سپون کریں</button>
+    <button class="abuse-btn" onclick="abuseGodSpeed()">⚡ گوڈ سپیڈ (140 WalkSpeed)</button>
   </div>
 
 <script>
   /* =========================================================
-     SITE TABS & AVATAR STATE
+     PORTAL UI TABS & CHARACTER CONFIG
      ========================================================= */
-  let bobux = 10500;
-  let activeSkin = {
-    id: 'noob',
-    name: 'Classic Noob',
-    icon: '😎',
-    headColor: 0xf5cd2f,
-    torsoColor: 0x0d69ac,
-    legColor: 0x5a9a32
-  };
+  let userBobux = 18500;
+  let activeCharKey = 'robot'; // 'robot', 'soldier', 'xbot', 'noob', 'guest', 'king'
 
-  function switchTab(tab) {
-    document.getElementById('tab-discover').classList.toggle('active', tab === 'discover');
-    document.getElementById('tab-avatar').classList.toggle('active', tab === 'avatar');
-    document.getElementById('page-discover').classList.toggle('active', tab === 'discover');
-    document.getElementById('page-avatar').classList.toggle('active', tab === 'avatar');
+  function switchView(view) {
+    document.getElementById('btn-discover').classList.toggle('active', view === 'discover');
+    document.getElementById('btn-avatar').classList.toggle('active', view === 'avatar');
+    document.getElementById('view-discover').classList.toggle('active', view === 'discover');
+    document.getElementById('view-avatar').classList.toggle('active', view === 'avatar');
   }
 
-  function applySkin(id, icon, name, head, torso, leg, el) {
-    activeSkin = { id, icon, name, headColor: head, torsoColor: torso, legColor: leg };
-    document.querySelectorAll('.skin-item').forEach(item => item.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('avatarPreviewIcon').innerText = icon;
-    document.getElementById('navAvatarIcon').innerText = icon;
-    document.getElementById('currentSkinTitle').innerText = name;
-    update3DAvatarColors();
+  function selectCharacter(key, icon, name, desc, el) {
+    activeCharKey = key;
+    document.querySelectorAll('.items-grid .item-card').forEach(c => c.classList.remove('equipped'));
+    el.classList.add('equipped');
+    document.getElementById('wardrobeIcon').innerText = icon;
+    document.getElementById('wardrobeCharTitle').innerText = name;
+    document.getElementById('wardrobeTypeLabel').innerText = desc;
+    document.getElementById('navUserIcon').innerText = icon;
+    updateInGameChips();
+    if (is3DActive) loadActiveCharacter();
   }
 
-  function launchMiniGame(title, icon, desc) {
-    alert(`🚀 Launching experience: "${title}"\n${desc}\n\nServer connecting... Loaded!`);
+  function switchInGameChar(key) {
+    activeCharKey = key;
+    updateInGameChips();
+    loadActiveCharacter();
   }
 
-  function toggleAdmin() {
-    const p = document.getElementById('adminPanel');
+  function updateInGameChips() {
+    document.querySelectorAll('.char-chip').forEach(c => c.classList.remove('active'));
+    const target = document.getElementById('chip-' + activeCharKey);
+    if (target) target.classList.add('active');
+  }
+
+  function toggleAdminPanel() {
+    const p = document.getElementById('adminPanelFloat');
     p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  function addBobux(amount) {
-    bobux += amount;
-    document.getElementById('navBobux').innerText = bobux.toLocaleString();
-    document.getElementById('game3dBobux').innerText = '⬡ ' + bobux.toLocaleString();
-    alert(`💰 ${amount.toLocaleString()} Bobux شامل کر دیے گئے!`);
-  }
+  /* =========================================================
+     SYNTHESIZED WEB AUDIO ENGINE
+     ========================================================= */
+  const AudioEngine = {
+    ctx: null,
+    init() {
+      if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    },
+    playTone(freq, type, duration, endFreq = null) {
+      try {
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, this.ctx.currentTime + duration);
+        gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+      } catch(e) {}
+    },
+    jump() { this.playTone(180, 'sine', 0.2, 450); },
+    eggCollect() {
+      this.playTone(523.25, 'triangle', 0.15);
+      setTimeout(() => this.playTone(659.25, 'triangle', 0.15), 100);
+      setTimeout(() => this.playTone(783.99, 'triangle', 0.25), 200);
+    },
+    nightSiren() {
+      this.playTone(400, 'sawtooth', 0.6, 750);
+      setTimeout(() => this.playTone(750, 'sawtooth', 0.6, 400), 600);
+    }
+  };
 
   /* =========================================================
-     THREE.JS 3D ENGINE (STEEL AN EGG WITH CUSTOM CHARACTER)
+     THREE.JS 3D ENGINE WITH SKINNED MESHES & MORPHS
      ========================================================= */
-  let scene, camera, renderer, clock;
-  let avatarGroup, headMesh, torsoMesh, leftArmMesh, rightArmMesh, leftLegMesh, rightLegMesh, carriedEggMesh;
+  let scene, camera, renderer, clock, gltfLoader;
+  let playerContainer, currentModelRoot = null;
+  let mixer = null, activeAction = null, characterActions = {};
+  let carriedEggMesh = null;
   let treadmillGroup, tmBelt;
+  let chickenBoss, chickenEyes;
   let sunLight, moonMesh;
-  let activeEggs = [];
-  let playerSpeed = 16;
-  let eggsStolen = 0;
-  let hasEgg = false;
-  let carriedTier = null;
-  let isGameRunning = false;
+  let is3DActive = false;
 
-  // Night cycle
-  let cycleTimer = 300; // 5 min
+  // Mechanics
+  let playerSpeed = 16;
+  let isFlying = false;
+  let isCarryingEgg = false;
+  let carriedEggTier = null;
+  const activeEggs = [];
+
+  // 5-Minute Night Cycle
+  const DAY_TIME = 300;
+  const NIGHT_TIME = 60;
+  let cycleTimer = DAY_TIME;
   let isNight = false;
-  let nightMultiplier = 1;
+  let nightMult = 1;
+
+  // GLTF CDN Models (Permissive CORS headers from jsdelivr)
+  const MODEL_URLS = {
+    robot: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/models/gltf/RobotExpressive/RobotExpressive.glb',
+    soldier: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/models/gltf/Soldier.glb',
+    xbot: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/models/gltf/Xbot.glb'
+  };
 
   function init3D() {
-    const container = document.getElementById('webgl-canvas-box');
+    const container = document.getElementById('three-viewport');
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x7ec0ee);
-    scene.fog = new THREE.FogExp2(0x7ec0ee, 0.006);
+    scene.fog = new THREE.FogExp2(0x7ec0ee, 0.005);
 
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
     clock = new THREE.Clock();
+    gltfLoader = new THREE.GLTFLoader();
 
     // Lighting
-    const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.7);
     scene.add(hemi);
 
-    sunLight = new THREE.DirectionalLight(0xffffff, 0.9);
-    sunLight.position.set(60, 100, 50);
+    sunLight = new THREE.DirectionalLight(0xfff5e6, 0.9);
+    sunLight.position.set(70, 130, 50);
     sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(2048, 2048);
     scene.add(sunLight);
 
     // Moon
-    moonMesh = new THREE.Mesh(new THREE.SphereGeometry(10, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-    moonMesh.position.set(0, 140, -180);
+    moonMesh = new THREE.Mesh(new THREE.SphereGeometry(12, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    moonMesh.position.set(0, 160, -200);
     moonMesh.visible = false;
     scene.add(moonMesh);
 
     // Baseplate
-    const bp = new THREE.Mesh(new THREE.PlaneGeometry(350, 350), new THREE.MeshStandardMaterial({ color: 0x474e54, roughness: 0.8 }));
+    const bp = new THREE.Mesh(new THREE.PlaneGeometry(360, 360), new THREE.MeshStandardMaterial({ color: 0x485058, roughness: 0.8 }));
     bp.rotation.x = -Math.PI / 2;
     bp.receiveShadow = true;
     scene.add(bp);
 
-    const grid = new THREE.GridHelper(350, 70, 0x333a40, 0x3d444b);
-    grid.position.y = 0.02;
-    scene.add(grid);
+    const studsGrid = new THREE.GridHelper(360, 72, 0x31373e, 0x3b424b);
+    studsGrid.position.y = 0.02;
+    scene.add(studsGrid);
 
-    // Base & Safezone
-    const base = new THREE.Mesh(new THREE.BoxGeometry(45, 1.2, 45), new THREE.MeshStandardMaterial({ color: 0x1f2326 }));
-    base.position.set(0, 0.6, 75);
-    scene.add(base);
+    // Player Safe Base
+    const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(46, 1.2, 46), new THREE.MeshStandardMaterial({ color: 0x1d2024 }));
+    baseMesh.position.set(0, 0.6, 75);
+    scene.add(baseMesh);
 
-    const border = new THREE.Mesh(new THREE.BoxGeometry(47, 0.8, 47), new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true }));
-    border.position.set(0, 0.8, 75);
-    scene.add(border);
+    const borderNeon = new THREE.Mesh(new THREE.BoxGeometry(48, 0.8, 48), new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true }));
+    borderNeon.position.set(0, 0.8, 75);
+    scene.add(borderNeon);
 
-    // Drop Nest
-    const nest = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 3.5, 1.4, 18), new THREE.MeshStandardMaterial({ color: 0xd4a373 }));
+    // Base Egg Nest
+    const nest = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 3.5, 1.4, 20), new THREE.MeshStandardMaterial({ color: 0xba8c63 }));
     nest.position.set(12, 1, 75);
     scene.add(nest);
 
     // Treadmill
-    treadmillGroup = new THREE.Group();
-    const tmFrame = new THREE.Mesh(new THREE.BoxGeometry(7, 1, 14), new THREE.MeshStandardMaterial({ color: 0x111 }));
-    tmBelt = new THREE.Mesh(new THREE.BoxGeometry(5.2, 1.15, 12), new THREE.MeshStandardMaterial({ color: 0x00e5ff }));
-    treadmillGroup.add(tmFrame, tmBelt);
-    treadmillGroup.position.set(-11, 0.6, 75);
-    scene.add(treadmillGroup);
+    buildTreadmill();
 
-    // Build Character
-    buildAvatar();
+    // Chicken Boss
+    buildChickenBoss();
+
+    // Player Anchor
+    playerContainer = new THREE.Group();
+    playerContainer.position.set(0, 0, 75);
+    scene.add(playerContainer);
+
+    // Carried Egg Mesh
+    carriedEggMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 18, 18), new THREE.MeshStandardMaterial({ roughness: 0.2 }));
+    carriedEggMesh.scale.set(1, 1.35, 1);
+    carriedEggMesh.position.set(0, 5.2, 0);
+    carriedEggMesh.visible = false;
+    playerContainer.add(carriedEggMesh);
 
     // Populate Eggs
-    populateTierEggs();
+    populateEggs();
 
-    // Inputs
+    // Load initial character
+    loadActiveCharacter();
+
+    // Key handlers
     setupControls();
   }
 
-  function buildAvatar() {
-    avatarGroup = new THREE.Group();
-
-    headMesh = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 1.2), new THREE.MeshStandardMaterial({ color: activeSkin.headColor }));
-    headMesh.position.y = 3.6;
-    avatarGroup.add(headMesh);
-
-    torsoMesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.torsoColor }));
-    torsoMesh.position.y = 2.0;
-    avatarGroup.add(torsoMesh);
-
-    leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.headColor }));
-    leftArmMesh.position.set(-1.5, 2.0, 0);
-    avatarGroup.add(leftArmMesh);
-
-    rightArmMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.headColor }));
-    rightArmMesh.position.set(1.5, 2.0, 0);
-    avatarGroup.add(rightArmMesh);
-
-    leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.legColor }));
-    leftLegMesh.position.set(-0.5, 0.8, 0);
-    avatarGroup.add(leftLegMesh);
-
-    rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: activeSkin.legColor }));
-    rightLegMesh.position.set(0.5, 0.8, 0);
-    avatarGroup.add(rightLegMesh);
-
-    carriedEggMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), new THREE.MeshStandardMaterial({ roughness: 0.2 }));
-    carriedEggMesh.scale.set(1, 1.35, 1);
-    carriedEggMesh.position.set(0, 5.3, 0);
-    carriedEggMesh.visible = false;
-    avatarGroup.add(carriedEggMesh);
-
-    avatarGroup.position.set(0, 0, 75);
-    scene.add(avatarGroup);
+  function buildTreadmill() {
+    treadmillGroup = new THREE.Group();
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(7, 1, 14), new THREE.MeshStandardMaterial({ color: 0x111, metalness: 0.8 }));
+    tmBelt = new THREE.Mesh(new THREE.BoxGeometry(5.2, 1.15, 12), new THREE.MeshStandardMaterial({ color: 0x00f0ff, roughness: 0.2 }));
+    treadmillGroup.add(frame, tmBelt);
+    treadmillGroup.position.set(-12, 0.6, 75);
+    scene.add(treadmillGroup);
   }
 
-  function update3DAvatarColors() {
-    if (!headMesh) return;
-    headMesh.material.color.setHex(activeSkin.headColor);
-    leftArmMesh.material.color.setHex(activeSkin.headColor);
-    rightArmMesh.material.color.setHex(activeSkin.headColor);
-    torsoMesh.material.color.setHex(activeSkin.torsoColor);
-    leftLegMesh.material.color.setHex(activeSkin.legColor);
-    rightLegMesh.material.color.setHex(activeSkin.legColor);
+  function buildChickenBoss() {
+    chickenBoss = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.BoxGeometry(5.5, 5.5, 6.5), new THREE.MeshStandardMaterial({ color: 0x990000 }));
+    body.position.y = 3.6;
+    chickenBoss.add(body);
+
+    const head = new THREE.Mesh(new THREE.BoxGeometry(3, 3.5, 3), new THREE.MeshStandardMaterial({ color: 0x111 }));
+    head.position.set(0, 7, -3);
+    chickenBoss.add(head);
+
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.4, 8, 8), eyeMat);
+    eyeL.position.set(-0.8, 7.5, -4.5);
+    const eyeR = eyeL.clone();
+    eyeR.position.set(0.8, 7.5, -4.5);
+    chickenEyes = [eyeL, eyeR];
+    chickenBoss.add(eyeL, eyeR);
+
+    chickenBoss.position.set(0, 0, -60);
+    scene.add(chickenBoss);
   }
 
-  /* EGG SPAWN & TIERS */
-  const EGG_TYPES = {
-    RARE: { name: 'Rare Egg', color: 0x00b0ff, value: 500, scale: 1.1 },
-    INFERNAL: { name: 'Infernal Egg', color: 0xff3d00, value: 1500, scale: 1.3 },
-    DIVINE: { name: 'Divine Egg', color: 0xffd700, value: 5000, scale: 1.6 },
-    SECRET: { name: 'Secret Egg', color: 0x9c27b0, value: 20000, scale: 2.0 }
+  /* =========================================================
+     CHARACTER LOADER (SKINNED GLTF + ANIMATION BLENDING)
+     ========================================================= */
+  let blockyLimbAnim = 0;
+
+  function loadActiveCharacter() {
+    if (currentModelRoot) {
+      playerContainer.remove(currentModelRoot);
+      currentModelRoot = null;
+    }
+    characterActions = {};
+    activeAction = null;
+    mixer = null;
+
+    if (activeCharKey === 'robot' || activeCharKey === 'soldier' || activeCharKey === 'xbot') {
+      const pill = document.getElementById('modelLoadPill');
+      pill.style.display = 'block';
+      pill.innerText = `⏳ Loading Three.js ${activeCharKey.toUpperCase()}...`;
+
+      gltfLoader.load(
+        MODEL_URLS[activeCharKey],
+        (gltf) => {
+          pill.style.display = 'none';
+          const model = gltf.scene;
+          currentModelRoot = model;
+
+          // Scale & orient
+          if (activeCharKey === 'robot') {
+            model.scale.set(1.4, 1.4, 1.4);
+          } else if (activeCharKey === 'soldier') {
+            model.scale.set(2.2, 2.2, 2.2);
+          } else if (activeCharKey === 'xbot') {
+            model.scale.set(2.0, 2.0, 2.0);
+          }
+
+          model.traverse(o => {
+            if (o.isMesh) {
+              o.castShadow = true;
+              o.receiveShadow = true;
+            }
+          });
+
+          playerContainer.add(model);
+
+          // Mixer & Animation Setup
+          mixer = new THREE.AnimationMixer(model);
+          gltf.animations.forEach(clip => {
+            characterActions[clip.name.toLowerCase()] = mixer.clipAction(clip);
+          });
+
+          // Play default Idle or Walk
+          const idleClip = characterActions['idle'] || characterActions['standing'] || gltf.animations[0] && mixer.clipAction(gltf.animations[0]);
+          if (idleClip) {
+            idleClip.play();
+            activeAction = idleClip;
+          }
+        },
+        undefined,
+        (err) => {
+          pill.innerText = '⚠️ Failed to load online GLTF. Loaded Blocky Avatar!';
+          setTimeout(() => pill.style.display = 'none', 3000);
+          buildBlockyAvatar();
+        }
+      );
+    } else {
+      buildBlockyAvatar();
+    }
+  }
+
+  function buildBlockyAvatar() {
+    let headColor = 0xf5cd2f, torsoColor = 0x0d69ac, legColor = 0x5a9a32;
+    if (activeCharKey === 'guest') { headColor = 0x222; torsoColor = 0xd00000; legColor = 0x111; }
+    if (activeCharKey === 'king') { headColor = 0xffd700; torsoColor = 0xffaa00; legColor = 0xb8860b; }
+
+    const grp = new THREE.Group();
+    function createBox(w, h, d, col) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ color: col, roughness: 0.5 }));
+      m.castShadow = true;
+      return m;
+    }
+
+    const head = createBox(1.2, 1.2, 1.2, headColor); head.position.y = 3.6; grp.add(head);
+    const torso = createBox(2, 2, 1, torsoColor); torso.position.y = 2.0; grp.add(torso);
+    grp.userData.leftArm = createBox(1, 2, 1, headColor); grp.userData.leftArm.position.set(-1.5, 2.0, 0); grp.add(grp.userData.leftArm);
+    grp.userData.rightArm = createBox(1, 2, 1, headColor); grp.userData.rightArm.position.set(1.5, 2.0, 0); grp.add(grp.userData.rightArm);
+    grp.userData.leftLeg = createBox(1, 2, 1, legColor); grp.userData.leftLeg.position.set(-0.5, 0.8, 0); grp.add(grp.userData.leftLeg);
+    grp.userData.rightLeg = createBox(1, 2, 1, legColor); grp.userData.rightLeg.position.set(0.5, 0.8, 0); grp.add(grp.userData.rightLeg);
+
+    currentModelRoot = grp;
+    playerContainer.add(grp);
+  }
+
+  /* Crossfade animation blending */
+  function fadeToAction(name, duration = 0.2) {
+    if (!mixer) return;
+    const nextAction = characterActions[name.toLowerCase()];
+    if (!nextAction || activeAction === nextAction) return;
+
+    if (activeAction) {
+      activeAction.fadeOut(duration);
+    }
+    nextAction.reset().fadeIn(duration).play();
+    activeAction = nextAction;
+  }
+
+  /* Trigger emote action (Wave, Punch, Dance) */
+  function triggerEmote(name) {
+    if (!mixer) return;
+    const emote = characterActions[name.toLowerCase()];
+    if (emote) {
+      fadeToAction(name, 0.15);
+      setTimeout(() => {
+        fadeToAction(keysMoving() ? (playerSpeed > 25 ? 'running' : 'walking') : 'idle', 0.2);
+      }, 1800);
+    }
+  }
+
+  /* EGG RARITY DEFINITIONS */
+  const EGG_TIERS = {
+    RARE: { name: 'Rare Blue', color: 0x00b4d8, value: 500, scale: 1.1 },
+    INFERNAL: { name: 'Infernal Lava', color: 0xff3b00, value: 1800, scale: 1.35 },
+    DIVINE: { name: 'Divine Holy', color: 0xffd700, value: 6000, scale: 1.6 },
+    SECRET: { name: 'Cosmic Secret', color: 0x9d4edd, value: 25000, scale: 2.1 }
   };
 
-  function create3DEgg(typeKey, x, z) {
-    const t = EGG_TYPES[typeKey];
+  function spawnEgg(typeKey, x, z) {
+    const tier = EGG_TIERS[typeKey];
     const grp = new THREE.Group();
-    const m = new THREE.Mesh(new THREE.SphereGeometry(1.1 * t.scale, 18, 18), new THREE.MeshStandardMaterial({ color: t.color, emissive: t.color, emissiveIntensity: 0.4 }));
-    m.scale.set(1, 1.35, 1);
-    grp.add(m);
+    const eggM = new THREE.Mesh(
+      new THREE.SphereGeometry(1.1 * tier.scale, 20, 20),
+      new THREE.MeshStandardMaterial({ color: tier.color, emissive: tier.color, emissiveIntensity: 0.5, metalness: 0.7, roughness: 0.2 })
+    );
+    eggM.scale.set(1, 1.35, 1);
+    grp.add(eggM);
 
     if (typeKey === 'DIVINE' || typeKey === 'SECRET') {
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8 * t.scale, 0.12, 8, 30), new THREE.MeshBasicMaterial({ color: t.color }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8 * tier.scale, 0.12, 8, 30), new THREE.MeshBasicMaterial({ color: tier.color }));
       ring.rotation.x = Math.PI / 2;
       grp.add(ring);
       grp.userData.ring = ring;
     }
 
-    grp.position.set(x, 1.4 * t.scale, z);
-    grp.userData.tier = t;
+    grp.position.set(x, 1.4 * tier.scale, z);
+    grp.userData.tier = tier;
     scene.add(grp);
     activeEggs.push(grp);
   }
 
-  function populateTierEggs() {
-    const pts = [[-30, -50], [0, -65], [30, -50], [-20, -20], [20, -20], [0, -35]];
-    pts.forEach((p, idx) => {
-      let k = 'RARE';
-      if (idx === 1) k = 'DIVINE';
-      if (idx === 2) k = 'INFERNAL';
-      if (idx === 3) k = 'SECRET';
-      create3DEgg(k, p[0], p[1]);
+  function populateEggs() {
+    const spots = [[-30, -50], [0, -65], [30, -50], [-20, -20], [20, -20], [0, -35], [-45, -70], [45, -70]];
+    spots.forEach((pt, i) => {
+      let t = 'RARE';
+      if (i % 4 === 1) t = 'INFERNAL';
+      if (i % 4 === 2) t = 'DIVINE';
+      if (i % 4 === 3) t = 'SECRET';
+      spawnEgg(t, pt[0], pt[1]);
     });
   }
 
-  /* CONTROLS */
+  /* KEYBOARD & MOUSE CONTROLS */
   const keys = {};
-  let camH = Math.PI, camV = 0.35, camDist = 18;
-  let isRDown = false;
+  let camH = Math.PI, camV = 0.35, camDistance = 18;
+  let isRMouseDown = false;
   let velY = 0, isGrounded = true;
 
   function setupControls() {
     window.addEventListener('keydown', e => {
       keys[e.code] = true;
-      if (e.code === 'KeyE') checkEggPickup();
+      if (e.code === 'KeyE') tryInteractEgg();
+      if (e.code === 'KeyF') abuseToggleFly();
+      if (e.code === 'KeyB') triggerEmote('dance');
+      if (e.code === 'KeyG') triggerEmote('wave');
+      if (e.code === 'KeyH') triggerEmote('punch');
     });
+
     window.addEventListener('keyup', e => keys[e.code] = false);
 
-    window.addEventListener('mousedown', e => { if (e.button === 2) isRDown = true; });
-    window.addEventListener('mouseup', e => { if (e.button === 2) isRDown = false; });
+    window.addEventListener('mousedown', e => { if (e.button === 2) isRMouseDown = true; });
+    window.addEventListener('mouseup', e => { if (e.button === 2) isRMouseDown = false; });
     window.addEventListener('contextmenu', e => e.preventDefault());
 
     window.addEventListener('mousemove', e => {
-      if (isRDown && isGameRunning) {
+      if (isRMouseDown && is3DActive) {
         camH -= e.movementX * 0.005;
         camV += e.movementY * 0.005;
         camV = Math.max(0.1, Math.min(Math.PI / 2.2, camV));
@@ -940,7 +1103,7 @@
     });
 
     window.addEventListener('resize', () => {
-      if (renderer && camera) {
+      if (camera && renderer) {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -948,153 +1111,238 @@
     });
   }
 
-  function checkEggPickup() {
-    if (hasEgg) return;
+  function keysMoving() {
+    return keys['KeyW'] || keys['ArrowUp'] || keys['KeyS'] || keys['ArrowDown'] || keys['KeyA'] || keys['ArrowLeft'] || keys['KeyD'] || keys['ArrowRight'];
+  }
+
+  function tryInteractEgg() {
+    if (isCarryingEgg) return;
     for (let i = 0; i < activeEggs.length; i++) {
       const eg = activeEggs[i];
-      if (avatarGroup.position.distanceTo(eg.position) < 5.5) {
-        hasEgg = true;
-        carriedTier = eg.userData.tier;
-        carriedEggMesh.material.color.setHex(carriedTier.color);
+      if (playerContainer.position.distanceTo(eg.position) < 5.8) {
+        isCarryingEgg = true;
+        carriedEggTier = eg.userData.tier;
+        carriedEggMesh.material.color.setHex(carriedEggTier.color);
         carriedEggMesh.visible = true;
         scene.remove(eg);
         activeEggs.splice(i, 1);
+        AudioEngine.eggCollect();
         break;
       }
     }
   }
 
-  function start3DGame() {
-    document.getElementById('game3dScreen').style.display = 'block';
-    isGameRunning = true;
-    update3DAvatarColors();
+  function launch3DExperience() {
+    document.getElementById('game3dWrapper').style.display = 'block';
+    is3DActive = true;
+    AudioEngine.init();
     if (!scene) init3D();
   }
 
-  function exit3DGame() {
-    document.getElementById('game3dScreen').style.display = 'none';
-    isGameRunning = false;
+  function exit3D() {
+    document.getElementById('game3dWrapper').style.display = 'none';
+    is3DActive = false;
   }
 
-  function forceNightToggle() {
-    if (isNight) {
-      isNight = false;
-      nightMultiplier = 1;
-      scene.background.setHex(0x7ec0ee);
-      sunLight.intensity = 0.9;
-      moonMesh.visible = false;
-      document.getElementById('gameNightBanner').style.display = 'none';
-    } else {
-      isNight = true;
-      nightMultiplier = 30;
-      scene.background.setHex(0x060814);
+  /* ADMIN TOOLS */
+  function abuseInstantNight() {
+    isNight = !isNight;
+    cycleTimer = isNight ? NIGHT_TIME : DAY_TIME;
+    applyNightVisuals(isNight);
+  }
+
+  function applyNightVisuals(night) {
+    if (night) {
+      nightMult = 30;
+      scene.background.setHex(0x05060d);
+      scene.fog.color.setHex(0x05060d);
       sunLight.intensity = 0.2;
       moonMesh.visible = true;
-      document.getElementById('gameNightBanner').style.display = 'block';
+      document.getElementById('nightEventBanner').style.display = 'block';
+      chickenEyes.forEach(e => e.material.color.setHex(0xff0000));
+      AudioEngine.nightSiren();
+    } else {
+      nightMult = 1;
+      scene.background.setHex(0x7ec0ee);
+      scene.fog.color.setHex(0x7ec0ee);
+      sunLight.intensity = 0.9;
+      moonMesh.visible = false;
+      document.getElementById('nightEventBanner').style.display = 'none';
+      chickenEyes.forEach(e => e.material.color.setHex(0x00ffff));
     }
-    updateHudText();
+    updateGauge();
   }
 
-  function boostSpeed(val) {
-    playerSpeed = val;
-    updateHudText();
+  function abuseAddBobux(amt) {
+    userBobux += amt;
+    document.getElementById('navCurrency').innerText = userBobux.toLocaleString();
+    document.getElementById('gameBobuxDisplay').innerText = '⬡ ' + userBobux.toLocaleString();
+    AudioEngine.eggCollect();
+    alert(`💰 ${amt.toLocaleString()} Bobux injected!`);
   }
 
-  function spawnDivineCluster() {
-    create3DEgg('DIVINE', 0, -20);
-    create3DEgg('SECRET', 10, -20);
-    alert('✨ Divine & Secret Eggs Spawned!');
+  function abuseToggleFly() {
+    isFlying = !isFlying;
   }
 
-  function updateHudText() {
-    document.getElementById('gameActionHud').innerHTML = `🏃 سپیڈ: ${Math.floor(playerSpeed)}<br><span style="font-size:12px; color:${isNight ? '#ff0055' : '#ffeb3b'};">⚡ ملٹی پلائر: ${nightMultiplier}X ${isNight ? '(رات ایکٹو)' : ''}</span>`;
+  function abuseSpawnDivineWave() {
+    spawnEgg('DIVINE', -10, -30);
+    spawnEgg('DIVINE', 10, -30);
+    spawnEgg('SECRET', 0, -30);
+    spawnEgg('SECRET', 0, -45);
+    AudioEngine.eggCollect();
   }
 
-  /* GAME RENDER LOOP */
-  let walkA = 0;
-  function renderLoop() {
-    requestAnimationFrame(renderLoop);
-    if (!isGameRunning || !scene) return;
+  function abuseGodSpeed() {
+    playerSpeed = 140;
+    updateGauge();
+  }
+
+  function updateGauge() {
+    document.getElementById('speedGauge').innerHTML = `🏃 سپیڈ: ${Math.floor(playerSpeed)}<br><span style="font-size:12px; color:${isNight ? '#ff334b' : '#ffd700'};">⚡ ملٹی پلائر: ${nightMult}X ${isNight ? '(رات ایکٹو)' : ''}</span>`;
+  }
+
+  /* =========================================================
+     3D TICK LOOP
+     ========================================================= */
+  function tick() {
+    requestAnimationFrame(tick);
+    if (!is3DActive || !scene) return;
 
     const dt = Math.min(clock.getDelta(), 0.1);
 
-    // Night Timer (Every 5 mins)
+    // Update GLTF Animation Mixer
+    if (mixer) {
+      mixer.update(dt);
+    }
+
+    // 5-Min Night Cycle
     cycleTimer -= dt;
     if (cycleTimer <= 0) {
-      forceNightToggle();
-      cycleTimer = isNight ? 60 : 300;
+      isNight = !isNight;
+      cycleTimer = isNight ? NIGHT_TIME : DAY_TIME;
+      applyNightVisuals(isNight);
     }
 
-    // WASD Move
+    const mins = Math.floor(cycleTimer / 60);
+    const secs = Math.floor(cycleTimer % 60);
+    document.getElementById('nightClockHud').innerText = isNight 
+      ? `🔥 نائٹ 30X: ${secs}s` 
+      : `🌙 نائٹ: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+
+    // Movement Vectors
     const fwd = new THREE.Vector3(-Math.sin(camH), 0, -Math.cos(camH)).normalize();
     const right = new THREE.Vector3(-fwd.z, 0, fwd.x);
-    const mDir = new THREE.Vector3();
+    const move = new THREE.Vector3();
 
-    if (keys['KeyW'] || keys['ArrowUp']) mDir.add(fwd);
-    if (keys['KeyS'] || keys['ArrowDown']) mDir.sub(fwd);
-    if (keys['KeyD'] || keys['ArrowRight']) mDir.add(right);
-    if (keys['KeyA'] || keys['ArrowLeft']) mDir.sub(right);
+    if (keys['KeyW'] || keys['ArrowUp']) move.add(fwd);
+    if (keys['KeyS'] || keys['ArrowDown']) move.sub(fwd);
+    if (keys['KeyD'] || keys['ArrowRight']) move.add(right);
+    if (keys['KeyA'] || keys['ArrowLeft']) move.sub(right);
 
-    if (mDir.lengthSq() > 0) {
-      mDir.normalize();
-      avatarGroup.position.addScaledVector(mDir, playerSpeed * dt);
-      avatarGroup.rotation.y = Math.atan2(mDir.x, mDir.z);
-
-      walkA += dt * (playerSpeed * 0.5);
-      leftArmMesh.rotation.x = Math.sin(walkA) * 0.7;
-      rightArmMesh.rotation.x = -Math.sin(walkA) * 0.7;
-      leftLegMesh.rotation.x = -Math.sin(walkA) * 0.7;
-      rightLegMesh.rotation.x = Math.sin(walkA) * 0.7;
+    if (isFlying) {
+      if (keys['Space']) playerContainer.position.y += 20 * dt;
+      if (keys['ShiftLeft']) playerContainer.position.y -= 20 * dt;
     }
 
-    // Jump
-    if (keys['Space'] && isGrounded) {
-      velY = 24;
-      isGrounded = false;
+    const isMoving = move.lengthSq() > 0;
+    if (isMoving) {
+      move.normalize();
+      playerContainer.position.addScaledVector(move, playerSpeed * dt);
+      playerContainer.rotation.y = Math.atan2(move.x, move.z);
+
+      // Skinned mesh animation crossfade
+      if (mixer) {
+        fadeToAction(playerSpeed > 26 ? (characterActions['run'] ? 'run' : 'running') : (characterActions['walk'] ? 'walk' : 'walking'), 0.2);
+      } else if (currentModelRoot && currentModelRoot.userData.leftArm) {
+        // Procedural blocky swinging
+        blockyLimbAnim += dt * (playerSpeed * 0.55);
+        currentModelRoot.userData.leftArm.rotation.x = Math.sin(blockyLimbAnim) * 0.7;
+        currentModelRoot.userData.rightArm.rotation.x = -Math.sin(blockyLimbAnim) * 0.7;
+        currentModelRoot.userData.leftLeg.rotation.x = -Math.sin(blockyLimbAnim) * 0.7;
+        currentModelRoot.userData.rightLeg.rotation.x = Math.sin(blockyLimbAnim) * 0.7;
+      }
+    } else {
+      if (mixer && activeAction && (activeAction === characterActions['walking'] || activeAction === characterActions['running'] || activeAction === characterActions['walk'] || activeAction === characterActions['run'])) {
+        fadeToAction(characterActions['idle'] ? 'idle' : 'standing', 0.2);
+      }
     }
-    velY -= 55 * dt;
-    avatarGroup.position.y += velY * dt;
-    if (avatarGroup.position.y <= 0) {
-      avatarGroup.position.y = 0;
-      velY = 0;
-      isGrounded = true;
+
+    // Physics
+    if (!isFlying) {
+      if (keys['Space'] && isGrounded) {
+        velY = 22;
+        isGrounded = false;
+        AudioEngine.jump();
+        if (mixer && characterActions['jump']) triggerEmote('jump');
+      }
+      velY -= 55 * dt;
+      playerContainer.position.y += velY * dt;
+      if (playerContainer.position.y <= 0) {
+        playerContainer.position.y = 0;
+        velY = 0;
+        isGrounded = true;
+      }
     }
 
     // Camera follow
     const offset = new THREE.Vector3(
-      Math.sin(camH) * Math.cos(camV) * camDist,
-      Math.sin(camV) * camDist + 3.5,
-      Math.cos(camH) * Math.cos(camV) * camDist
+      Math.sin(camH) * Math.cos(camV) * camDistance,
+      Math.sin(camV) * camDistance + 3.5,
+      Math.cos(camH) * Math.cos(camV) * camDistance
     );
-    camera.position.copy(avatarGroup.position).add(offset);
-    camera.lookAt(avatarGroup.position.x, avatarGroup.position.y + 3, avatarGroup.position.z);
+    camera.position.copy(playerContainer.position).add(offset);
+    camera.lookAt(playerContainer.position.x, playerContainer.position.y + 3, playerContainer.position.z);
 
-    // Treadmill 30X Boost Logic
-    const onTm = Math.abs(avatarGroup.position.x - treadmillGroup.position.x) < 3.2 &&
-                 Math.abs(avatarGroup.position.z - treadmillGroup.position.z) < 6;
+    // Treadmill 30X Gain
+    const onTm = Math.abs(playerContainer.position.x - treadmillGroup.position.x) < 3.2 &&
+                 Math.abs(playerContainer.position.z - treadmillGroup.position.z) < 6;
     if (onTm) {
-      playerSpeed += (2.0 * nightMultiplier) * dt;
-      updateHudText();
+      tmBelt.material.color.setHex(isNight ? 0xff0055 : 0x00f0ff);
+      playerSpeed += 2.2 * nightMult * dt;
+      updateGauge();
     }
 
-    // Bank Egg to base
-    if (hasEgg && avatarGroup.position.z > 52 && avatarGroup.position.distanceTo(new THREE.Vector3(12, 1, 75)) < 6) {
-      eggsStolen++;
-      addBobux(carriedTier.value);
-      hasEgg = false;
+    // Safe Base Egg Extraction
+    const inSafe = playerContainer.position.z > 52;
+    if (isCarryingEgg && inSafe && playerContainer.position.distanceTo(new THREE.Vector3(12, 1, 75)) < 6) {
+      userBobux += carriedEggTier.value;
+      document.getElementById('navCurrency').innerText = userBobux.toLocaleString();
+      document.getElementById('gameBobuxDisplay').innerText = '⬡ ' + userBobux.toLocaleString();
+      isCarryingEgg = false;
       carriedEggMesh.visible = false;
-      carriedTier = null;
+      AudioEngine.eggCollect();
+      carriedEggTier = null;
     }
 
-    // Spin divine egg rings
+    // Halo Spin
     activeEggs.forEach(eg => {
-      if (eg.userData.ring) eg.userData.ring.rotation.z += 0.05;
+      if (eg.userData.ring) eg.userData.ring.rotation.z += 0.04;
     });
+
+    // Chicken Boss AI
+    const distToBoss = chickenBoss.position.distanceTo(playerContainer.position);
+    if ((isCarryingEgg || distToBoss < 45) && !inSafe) {
+      const dir = new THREE.Vector3().subVectors(playerContainer.position, chickenBoss.position).normalize();
+      dir.y = 0;
+      chickenBoss.position.addScaledVector(dir, 15 * dt);
+      chickenBoss.rotation.y = Math.atan2(dir.x, dir.z);
+
+      if (distToBoss < 4.5) {
+        playerContainer.position.set(0, 0, 75);
+        if (isCarryingEgg) {
+          isCarryingEgg = false;
+          carriedEggMesh.visible = false;
+          carriedEggTier = null;
+        }
+        alert('💥 OOF! THE GUARDIAN CAUGHT YOU! EGG DROPPED!');
+      }
+    }
 
     renderer.render(scene, camera);
   }
 
-  renderLoop();
+  tick();
 </script>
 </body>
 </html>
