@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bobux - Steel an Egg Edition</title>
+<style>
+  :root {
+    --bg-main: #191b1d;
+    --bg-card: #232527;
+    --bg-card-hover: #32353b;
+    --nav-bg: #111214;
+    --sidebar-bg: #18191c;
+    --accent-green: #00b06f;
+    --accent-green-hover: #00c87f;
+    --accent-blue: #00a2ff;
+    --accent-red: #f04438;
+    --text-white: #ffffff;
+    --text-muted: #999ea5;
+    --border-color: #2b2d31;
+    --gold: #f5b800;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* TOP NAVIGATION */
+  .navbar {
+    height: 54px;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .bobux-icon {
+    width: 22px;
+    height: 22px;
+    background: var(--gold);
+    border-radius: 4px;
+    transform: rotate(15deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: #000;
+    font-size: 13px;
+  }
+
+  .nav-links a {
+    color: var(--text-white);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+
+  .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .search-bar {
+    background: #232527;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 14px;
+    color: #fff;
+    width: 260px;
+    outline: none;
+    font-size: 13px;
+  }
+
+  .bobux-counter {
+    background: #232527;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border-color);
+  }
+
+  .admin-toggle-btn {
+    background: #7a1cd8;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 10px rgba(122, 28, 216, 0.5);
+    transition: 0.2s;
+  }
+
+  .admin-toggle-btn:hover {
+    transform: scale(1.05);
+  }
+
+  /* LAYOUT */
+  .app-container {
+    display: flex;
+    margin-top: 54px;
+  }
+
+  .sidebar {
+    width: 200px;
+    background: var(--sidebar-bg);
+    height: calc(100vh - 54px);
+    position: fixed;
+    border-right: 1px solid var(--border-color);
+    padding: 16px 10px;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-bottom: 4px;
+  }
+
+  .sidebar a:hover, .sidebar a.active {
+    background: #232527;
+    color: #fff;
+  }
+
+  .main-content {
+    margin-left: 200px;
+    padding: 24px 36px;
+    width: calc(100% - 200px);
+  }
+
+  /* FEATURED TOP GAME: STEEL AN EGG */
+  .featured-container {
+    background: linear-gradient(135deg, #1b2838 0%, #201a35 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid #3b3f49;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #e91e63;
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .featured-art {
+    width: 55%;
+    min-height: 280px;
+    background: url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?auto=format&fit=crop&w=1200&q=80') center/cover;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .egg-overlay {
+    font-size: 90px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
+    animation: eggFloat 2.5s ease-in-out infinite;
+  }
+
+  @keyframes eggFloat {
+    0%, 100% { transform: translateY(0) rotate(-4deg); }
+    50% { transform: translateY(-15px) rotate(6deg); }
+  }
+
+  .featured-info {
+    padding: 32px;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-info h1 {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .creator-tag {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .play-btn {
+    background: var(--accent-green);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+    width: fit-content;
+  }
+
+  .play-btn:hover {
+    background: var(--accent-green-hover);
+    transform: translateY(-2px);
+  }
+
+  /* GAME GRIDS */
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .game-card {
+    background: var(--bg-card);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    border: 1px solid var(--border-color);
+  }
+
+  .game-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-4px);
+  }
+
+  .game-thumb {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+  }
+
+  .game-details {
+    padding: 10px;
+  }
+
+  .game-title {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+  }
+
+  .game-stats {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* PLAY MODAL (MINI-GAME CANVAS) */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .game-window {
+    background: #1b1d20;
+    width: 680px;
+    border-radius: 14px;
+    border: 2px solid #33373d;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+  }
+
+  .window-header {
+    background: #111214;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .close-window-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  #gameCanvas {
+    display: block;
+    background: #25282f;
+    margin: 0 auto;
+  }
+
+  .game-controls-hint {
+    padding: 10px 18px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ADMIN PANEL MODAL */
+  .admin-panel {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 360px;
+    background: #18191c;
+    border: 2px solid #7a1cd8;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(122, 28, 216, 0.4);
+    z-index: 999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .admin-header {
+    background: #7a1cd8;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .admin-body {
+    padding: 16px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .admin-group {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #2b2d31;
+    padding-bottom: 12px;
+  }
+
+  .admin-group h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #b085f5;
+    margin-bottom: 8px;
+  }
+
+  .admin-input {
+    width: 100%;
+    background: #232527;
+    border: 1px solid var(--border-color);
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: white;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .admin-btn {
+    background: #32353b;
+    border: 1px solid #454950;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    width: 100%;
+    margin-bottom: 6px;
+    text-align: center;
+    transition: 0.15s;
+  }
+
+  .admin-btn:hover {
+    background: #474b54;
+  }
+
+  .admin-btn.danger {
+    background: #d82c20;
+    border-color: #f04438;
+  }
+
+  .admin-btn.danger:hover {
+    background: #b52217;
+  }
+
+  .admin-btn.gold {
+    background: #d99b00;
+    color: black;
+    border: none;
+  }
+
+  .admin-btn.gold:hover {
+    background: #f5b800;
+  }
+
+  /* ADMIN ABUSE FX */
+  .marquee-alert {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    right: 0;
+    background: #f04438;
+    color: white;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 6px 0;
+    z-index: 90;
+    text-align: center;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+
+  .earthquake {
+    animation: shake 0.1s infinite !important;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(3px, 1px) rotate(0.5deg); }
+    50% { transform: translate(-2px, -3px) rotate(-0.5deg); }
+    100% { transform: translate(1px, 2px) rotate(0deg); }
+  }
+
+  .disco-active {
+    animation: discoBg 0.3s infinite !important;
+  }
+
+  @keyframes discoBg {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+
+  .falling-egg {
+    position: fixed;
+    font-size: 38px;
+    z-index: 9999;
+    pointer-events: none;
+    animation: eggFall 2s linear forwards;
+  }
+
+  @keyframes eggFall {
+    0% { top: -50px; transform: rotate(0deg); }
+    100% { top: 110vh; transform: rotate(360deg); }
+  }
+
+  /* BAN MODAL */
+  .ban-screen {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .ban-card {
+    background: #232527;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 450px;
+    border: 2px solid #f04438;
+  }
+
+  .ban-title {
+    color: #f04438;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ADMIN BROADCAST BAR -->
+  <div class="marquee-alert" id="systemBroadcast">⚠️ ADMIN ABUSE BROADCAST: ALL BOBUS RESERVES SEIZED BY THE NOOB ARMY!</div>
+
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo" onclick="location.reload()">
+        <div class="bobux-icon">B</div>
+        Bobux
+      </div>
+      <nav class="nav-links">
+        <a href="#">Discover</a>
+        <a href="#">Marketplace</a>
+        <a href="#">Create</a>
+      </nav>
+      <input type="text" class="search-bar" placeholder="Search games, eggs, friends...">
+    </div>
+
+    <div class="nav-right">
+      <div class="bobux-counter">
+        <div class="bobux-icon">B</div>
+        <span id="bobuxAmount">4,200</span>
+      </div>
+      <button class="admin-toggle-btn" onclick="toggleAdminPanel()">⚡ Admin Panel</button>
+      <div style="width: 32px; height: 32px; border-radius: 50%; background: #00a2ff; display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:pointer;">
+        😎
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <a href="#" class="active">🏠 Home</a>
+      <a href="#">🎮 Discover</a>
+      <a href="#">👕 Avatar</a>
+      <a href="#">💬 Messages</a>
+      <a href="#">👥 Friends</a>
+      <a href="#">🏆 Badges</a>
+      <a href="#">⚙️ Settings</a>
+    </aside>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="main-content">
+      
+      <!-- TOP HIGHLIGHT: STEEL AN EGG -->
+      <section class="featured-container" id="featuredSection">
+        <div class="featured-badge">🔥 #1 TOP RATED GAME</div>
+        <div class="featured-art">
+          <div class="egg-overlay">🥚</div>
+        </div>
+        <div class="featured-info">
+          <h1 id="featuredGameTitle">Steel an egg</h1>
+          <div class="creator-tag">By <strong>@EggThief_Studio</strong> • Verified Creator</div>
+          <div class="stats-row">
+            <span>👍 99% Likes</span>
+            <span>👥 142.8K Playing</span>
+            <span>🥚 8.2M Stolen</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
+            Sneak past the giant guard chickens, steel the legendary Diamond Egg, and escape back to your spaceship before you get scrambled!
+          </p>
+          <button class="play-btn" onclick="launchGame()">
+            <span>▶</span> Play "Steel an egg"
+          </button>
+        </div>
+      </section>
+
+      <!-- CONTINUE PLAYING -->
+      <div class="section-title">
+        <span>Recommended For You</span>
+      </div>
+      <div class="game-grid" id="gameGrid">
+        <!-- Game 1 -->
+        <div class="game-card" onclick="alert('Launching Natural Bobux Disaster...')">
+          <div class="game-thumb" style="background:#3e2723;">🌪️</div>
+          <div class="game-details">
+            <div class="game-title">Natural Bobux Disaster</div>
+            <div class="game-stats">👍 94% • 👥 22.4K</div>
+          </div>
+        </div>
+
+        <!-- Game 2 -->
+        <div class="game-card" onclick="alert('Launching Work at a Bobux Pizza Place...')">
+          <div class="game-thumb" style="background:#bf360c;">🍕</div>
+          <div class="game-details">
+            <div class="game-title">Work at Pizza Place</div>
+            <div class="game-stats">👍 91% • 👥 18.2K</div>
+          </div>
+        </div>
+
+        <!-- Game 3 -->
+        <div class="game-card" onclick="alert('Launching Pet Simulator Egg Edition...')">
+          <div class="game-thumb" style="background:#004d40;">🐾</div>
+          <div class="game-details">
+            <div class="game-title">Egg Pet Hatchery X</div>
+            <div class="game-stats">👍 89% • 👥 31.9K</div>
+          </div>
+        </div>
+
+        <!-- Game 4 -->
+        <div class="game-card" onclick="alert('Launching Escape Evil Guard Obby...')">
+          <div class="game-thumb" style="background:#1a237e;">🏃</div>
+          <div class="game-details">
+            <div class="game-title">Escape Evil Guard Obby</div>
+            <div class="game-stats">👍 87% • 👥 12.3K</div>
+          </div>
+        </div>
+
+        <!-- Game 5 -->
+        <div class="game-card" onclick="alert('Launching Murder Mystery Bobux...')">
+          <div class="game-thumb" style="background:#880e4f;">🔪</div>
+          <div class="game-details">
+            <div class="game-title">Mystery In Egg Town</div>
+            <div class="game-stats">👍 93% • 👥 45.1K</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- PLAYABLE MINI-GAME WINDOW -->
+  <div class="modal-overlay" id="gameModal">
+    <div class="game-window">
+      <div class="window-header">
+        <span>🎮 Bobux Engine - Playing: "Steel an egg"</span>
+        <button class="close-window-btn" onclick="closeGame()">✕</button>
+      </div>
+      <canvas id="gameCanvas" width="640" height="360"></canvas>
+      <div class="game-controls-hint">
+        <span>Controls: Arrow Keys or WASD to move</span>
+        <span id="miniScore">Eggs Stolen: 0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL & ADMIN ABUSE -->
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-header">
+      <span>🛡️ BOBUX ADMIN PANEL</span>
+      <span style="cursor:pointer;" onclick="toggleAdminPanel()">✕</span>
+    </div>
+    <div class="admin-body">
+      
+      <!-- GAME UPDATE TOOL -->
+      <div class="admin-group">
+        <h3>Game Updater</h3>
+        <input type="text" id="updateTitleInput" class="admin-input" placeholder="Change Top Game Title...">
+        <button class="admin-btn" onclick="updateGameTitle()">Update Top Game</button>
+      </div>
+
+      <!-- ECONOMY MODIFIER -->
+      <div class="admin-group">
+        <h3>Economy Abuse</h3>
+        <button class="admin-btn gold" onclick="giveInfiniteBobux()">💰 Give 999,999,999 Bobux</button>
+        <button class="admin-btn" onclick="resetBobux()">Reset Bobux to 0</button>
+      </div>
+
+      <!-- ADMIN ABUSE BUTTONS -->
+      <div class="admin-group">
+        <h3>⚡ Admin Abuse Tools</h3>
+        <input type="text" id="broadcastInput" class="admin-input" placeholder="Custom System Announcement...">
+        <button class="admin-btn danger" onclick="sendBroadcast()">📢 Broadcast Message</button>
+        <button class="admin-btn danger" onclick="toggleEarthquake()">🌋 Trigger Screen Earthquake</button>
+        <button class="admin-btn danger" onclick="rainEggs()">🥚 Rain 100 Eggs On Screen</button>
+        <button class="admin-btn danger" onclick="toggleDisco()">🪩 Disco Screen Flash</button>
+        <button class="admin-btn danger" onclick="fakeBan()">🔨 Ban Hammer Self</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAKE BAN HAMMER SCREEN -->
+  <div class="ban-screen" id="banScreen">
+    <div class="ban-card">
+      <div class="ban-title">ACCOUNT TERMINATED</div>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+        You were permanently banned by <strong>Admin_Abuser69</strong>.<br>
+        Reason: <em>"Steeling way too many eggs without a egg license."</em>
+      </p>
+      <button class="admin-btn danger" onclick="unbanSelf()">Appeal & Unban</button>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    let bobux = 4200;
+    let earthquakeActive = false;
+    let discoActive = false;
+
+    // ADMIN TOGGLE
+    function toggleAdminPanel() {
+      const panel = document.getElementById('adminPanel');
+      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // UPDATE GAME TITLE
+    function updateGameTitle() {
+      const input = document.getElementById('updateTitleInput');
+      if (input.value.trim() !== '') {
+        document.getElementById('featuredGameTitle').innerText = input.value;
+        alert('Top game successfully updated to: ' + input.value);
+        input.value = '';
+      }
+    }
+
+    // ECONOMY ABUSE
+    function giveInfiniteBobux() {
+      bobux = 999999999;
+      document.getElementById('bobuxAmount').innerText = bobux.toLocaleString();
+      alert('⚡ ADMIN ABUSE: 999,999,999 BOBUX INJECTED!');
+    }
+
+    function resetBobux() {
+      bobux = 0;
+      document.getElementById('bobuxAmount').innerText = '0';
+    }
+
+    // BROADCAST ALERT
+    function sendBroadcast() {
+      const text = document.getElementById('broadcastInput').value;
+      const bar = document.getElementById('systemBroadcast');
+      if (text.trim() !== '') {
+        bar.innerText = '⚠️ ' + text.toUpperCase();
+        bar.style.display = 'block';
+      }
+    }
+
+    // SCREEN EARTHQUAKE
+    function toggleEarthquake() {
+      earthquakeActive = !earthquakeActive;
+      if (earthquakeActive) {
+        document.body.classList.add('earthquake');
+      } else {
+        document.body.classList.remove('earthquake');
+      }
+    }
+
+    // DISCO FLASH
+    function toggleDisco() {
+      discoActive = !discoActive;
+      if (discoActive) {
+        document.body.classList.add('disco-active');
+      } else {
+        document.body.classList.remove('disco-active');
+      }
+    }
+
+    // RAIN EGGS ABUSE
+    function rainEggs() {
+      for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+          const egg = document.createElement('div');
+          egg.className = 'falling-egg';
+          egg.innerText = ['🥚', '🍳', '🐥', '💎'][Math.floor(Math.random() * 4)];
+          egg.style.left = Math.random() * 100 + 'vw';
+          document.body.appendChild(egg);
+          setTimeout(() => egg.remove(), 2000);
+        }, i * 30);
+      }
+    }
+
+    // BAN HAMMER
+    function fakeBan() {
+      document.getElementById('banScreen').style.display = 'flex';
+    }
+
+    function unbanSelf() {
+      document.getElementById('banScreen').style.display = 'none';
+      alert('You unbanned yourself using admin privileges!');
+    }
+
+    // --- MINI GAME: "STEEL AN EGG" ---
+    let canvas = document.getElementById('gameCanvas');
+    let ctx = canvas.getContext('2d');
+    let gameLoopId;
+    let score = 0;
+
+    const player = { x: 50, y: 180, size: 24, speed: 4 };
+    const guard = { x: 300, y: 100, size: 30, speedY: 3 };
+    const egg = { x: 580, y: 180, size: 20, stolen: false };
+    const keys = {};
+
+    window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+    function launchGame() {
+      document.getElementById('gameModal').style.display = 'flex';
+      score = 0;
+      egg.stolen = false;
+      document.getElementById('miniScore').innerText = 'Eggs Stolen: ' + score;
+      player.x = 50;
+      player.y = 180;
+      cancelAnimationFrame(gameLoopId);
+      gameLoop();
+    }
+
+    function closeGame() {
+      document.getElementById('gameModal').style.display = 'none';
+      cancelAnimationFrame(gameLoopId);
+    }
+
+    function gameLoop() {
+      // Logic
+      if ((keys['arrowup'] || keys['w']) && player.y > 0) player.y -= player.speed;
+      if ((keys['arrowdown'] || keys['s']) && player.y < canvas.height - player.size) player.y += player.speed;
+      if ((keys['arrowleft'] || keys['a']) && player.x > 0) player.x -= player.speed;
+      if ((keys['arrowright'] || keys['d']) && player.x < canvas.width - player.size) player.x += player.speed;
+
+      // Guard bounce
+      guard.y += guard.speedY;
+      if (guard.y < 30 || guard.y > canvas.height - 50) guard.speedY *= -1;
+
+      // Steal egg check
+      if (!egg.stolen && Math.hypot(player.x - egg.x, player.y - egg.y) < 30) {
+        egg.stolen = true;
+      }
+
+      // Return egg to base
+      if (egg.stolen && player.x < 60) {
+        score++;
+        egg.stolen = false;
+        bobux += 500;
+        document.getElementById('bobuxAmount').innerText = bobux.toLocaleString();
+        document.getElementById('miniScore').innerText = 'Eggs Stolen: ' + score + ' (+500 Bobux!)';
+      }
+
+      // Guard Catch
+      if (Math.hypot(player.x - guard.x, player.y - guard.y) < 30) {
+        player.x = 50;
+        player.y = 180;
+        egg.stolen = false;
+        alert('BUSTED BY THE EGG GUARD! You got scrambled!');
+      }
+
+      // Render
+      ctx.fillStyle = '#1e2124';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Safe Base
+      ctx.fillStyle = 'rgba(0, 176, 111, 0.2)';
+      ctx.fillRect(0, 0, 80, canvas.height);
+      ctx.fillStyle = '#00b06f';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('ESCAPE ZONE', 10, 20);
+
+      // Draw Guard (Chicken Robot)
+      ctx.font = '26px sans-serif';
+      ctx.fillText('🤖', guard.x - 12, guard.y + 10);
+
+      // Draw Egg
+      if (!egg.stolen) {
+        ctx.font = '24px sans-serif';
+        ctx.fillText('🥚', egg.x, egg.y);
+      }
+
+      // Draw Player (Noob)
+      ctx.font = '24px sans-serif';
+      ctx.fillText(egg.stolen ? '🏃🥚' : '😎', player.x, player.y);
+
+      gameLoopId = requestAnimationFrame(gameLoop);
+    }
+  </script>
+</body>
+</html>
